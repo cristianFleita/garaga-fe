@@ -1,8 +1,8 @@
 export enum CellType {
     EMPTY = "",
-    SHEEP = "images/sheep.png",
-    SHEEP_DEAD = "images/sheep_dead.png",
-    SHEEP_FAKE = "images/sheep_fake.png",
+    SHEEP = "images/icons/sheep.png",
+    SHEEP_DEAD = "images/icons/sheep_dead.png",
+    SHEEP_FAKE = "images/icons/sheep_fake.png",
   }
   
   export interface GridCell {
