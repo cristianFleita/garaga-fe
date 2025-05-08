@@ -1,32 +1,77 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Button, Flex, Input } from "@chakra-ui/react";
 import { useGameContext } from "../providers/GameProvider";
 import { useCells } from "../dojo/queries/useCells";
+import { useState } from "react";
+import { MenuContainer } from "../components/MenuContainer";
+import { useGame } from "../dojo/queries/useGame";
+import { useRound } from "../dojo/queries/useRound";
 
 export const Lobby = () => {
-  const { executeCreateGame, joinGame, submitWolfCommitment } =
-    useGameContext();
+  const {
+    executeCreateGame,
+    joinGame,
+    submitWolfCommitment,
+    wolfKillSheep,
+    shepherdMarkSuspicious,
+    checkIsWolf,
+  } = useGameContext();
+  const [gameId, setGameId] = useState("");
 
-  let cells = useCells();
-
-  console.log(cells);
+  //   let cells = useCells();
+  //   console.log(cells);
+  console.log(useGame());
+  console.log(useRound());
 
   return (
-    <Flex>
+    <MenuContainer>
+      <Flex gap={4}>
+        <Input
+          type="number"
+          variant={"solid"}
+          placeholder="Enter game ID"
+          value={gameId}
+          onChange={(e) => {
+            setGameId(e.target.value);
+          }}
+          maxW="260px"
+        />
+        <Button
+          variant={"secondarySolid"}
+          onClick={() => {
+            joinGame(Number(gameId));
+          }}
+        >
+          Join
+        </Button>
+      </Flex>
       <Button
+        variant={"secondarySolid"}
         onClick={() => {
           executeCreateGame();
         }}
       >
         Create Game
       </Button>
+
       <Button
+        variant={"secondarySolid"}
         onClick={() => {
-          joinGame(3);
-          submitWolfCommitment(3, 1);
+          submitWolfCommitment(1);
+          wolfKillSheep(2);
         }}
       >
-        Join
+        Submit and kill sheep
       </Button>
-    </Flex>
+
+      <Button
+        variant={"secondarySolid"}
+        onClick={() => {
+          shepherdMarkSuspicious(4);
+          checkIsWolf();
+        }}
+      >
+        Select sheep and check
+      </Button>
+    </MenuContainer>
   );
 };
