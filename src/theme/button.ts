@@ -1,4 +1,4 @@
-import { BLUE, NEON_GREEN, VIOLET} from "./colors";
+import { BLUE, BROWN_LIGHT, GREEN, NEON_GREEN, VIOLET, YELLOW} from "./colors";
 
 import { defineStyle, defineStyleConfig } from "@chakra-ui/react";
 
@@ -17,10 +17,16 @@ const solid = defineStyle({
 });
 
 const secondarySolid = defineStyle({
-  backgroundColor: "violet",
+  backgroundColor: `${YELLOW}`,
+  color: `${GREEN}`,
+  fontWeight: 900,
+  WebkitTextStroke: "0.5px currentColor",
   boxShadow: {
-    base: `0px 0px 10px 6px ${VIOLET}`,
-    md: `0px 0px 20px 12px ${VIOLET}`,
+    base: `0px 0px 4px 2px ${BROWN_LIGHT}`,
+    md: `0px 0px 6px 4px ${BROWN_LIGHT}`,
+  },
+  "&:hover": {
+    transform: "scale(1.1)",
   },
 });
 

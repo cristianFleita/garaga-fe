@@ -15,9 +15,7 @@ export const PreThemeLoadingPage = ({ children }: PropsWithChildren) => {
         fontFamily: "Orbitron",
         fontSize: 30,
         letterSpacing: "0.25em",
-        background: `url(bg/home-bg.jpg)`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        background: `url(images/bg_06.gif) center center / cover no-repeat`,
         flexWrap: "wrap",
       }}
     >
