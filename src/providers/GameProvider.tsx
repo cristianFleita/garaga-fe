@@ -15,6 +15,8 @@ export interface IGameContext {
   submitWolfCommitment: (selectedWolfIndex: number) => void;
   checkOrCreateGame: () => void;
   wolfKillSheep: (sheepIdx: number) => void;
+  shepherdMarkSuspicious: (sheepIdx: number) => void;
+  checkIsWolf: () => void;
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
@@ -34,8 +36,14 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const { gameId, setGameId } = state;
 
-  const { createGame, joinGame, submitWolfCommitment, wolfKillSheep } =
-    useGameActions();
+  const {
+    createGame,
+    joinGame,
+    submitWolfCommitment,
+    wolfKillSheep,
+    shepherdMarkSuspicious,
+    checkIsWolf,
+  } = useGameActions();
 
   function generateRandomSalt() {
     // Generar un número aleatorio grande para usar como salt
@@ -87,7 +95,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const ExecuteSubmitWolfCommitment = async (selectedSheepValue: number) => {
+  const executeSubmitWolfCommitment = async (selectedSheepValue: number) => {
     try {
       const wolfSalt = generateRandomSalt();
       const wolfCommitment = poseidonHashBN254(
@@ -106,9 +114,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const ExecuteKillSheep = async (sheepToKillIndex: number) => {
+  const executeKillSheep = async (sheepToKillIndex: number) => {
     try {
-      console.log(gameId, sheepToKillIndex);
       await wolfKillSheep(gameId, Number(sheepToKillIndex)).then(() => {
         console.log("Sheep killed successfully");
       });
@@ -117,12 +124,36 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const executeMarkSheep = async (sheepToMarkIndex: number) => {
+    try {
+      await shepherdMarkSuspicious(gameId, Number(sheepToMarkIndex)).then(
+        () => {
+          console.log("Sheep selected successfully");
+        }
+      );
+    } catch (e) {
+      console.error("Error selecting the suspected sheep", e);
+    }
+  };
+
+  const executeCheckIsWolf = async () => {
+    try {
+      await checkIsWolf(gameId).then(() => {
+        console.log("Wolf checked successfully");
+      });
+    } catch (e) {
+      console.error("Error checking wolf", e);
+    }
+  };
+
   const actions = {
     executeCreateGame,
     joinGame: executeJoinGame,
     checkOrCreateGame,
-    submitWolfCommitment: ExecuteSubmitWolfCommitment,
-    wolfKillSheep: ExecuteKillSheep,
+    submitWolfCommitment: executeSubmitWolfCommitment,
+    wolfKillSheep: executeKillSheep,
+    shepherdMarkSuspicious: executeMarkSheep,
+    checkIsWolf: executeCheckIsWolf,
   };
 
   return (
