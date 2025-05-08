@@ -80,18 +80,48 @@ export const useGameActions = () => {
 
         return {};
       } else {
-        console.error("Error creating game:", tx);
-        return createGameEmptyResponse;
+        console.error("Error joining game:", tx);
+        return {};
       }
     } catch (e) {
       failedTransactionToast();
       console.log(e);
-      return createGameEmptyResponse;
+      return {};
+    }
+  };
+
+  const submitWolfCommitment = async (gameId: number, commitment: number) => {
+    try {
+      showTransactionToast();
+      const response = await client.game_system.submitWolfCommitment(
+        account,
+        gameId,
+        commitment
+      );
+      const transaction_hash = response?.transaction_hash ?? "";
+      showTransactionToast(transaction_hash, "Submitting wolf commitment ...");
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      updateTransactionToast(transaction_hash, tx.isSuccess());
+      if (tx.isSuccess()) {
+        const events = tx.events;
+
+        return {};
+      } else {
+        console.error("Error submitting commitment ", tx);
+        return {};
+      }
+    } catch (e) {
+      failedTransactionToast();
+      console.log(e);
+      return {};
     }
   };
 
   // TODO:
-  // - submit_wolf_commitment
   // - wolf_kill_sheep
   // - shepherd_mark_suspicious
   // - check_is_wolf
@@ -99,5 +129,6 @@ export const useGameActions = () => {
   return {
     createGame,
     joinGame,
+    submitWolfCommitment,
   };
 };

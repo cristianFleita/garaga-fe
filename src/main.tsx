@@ -16,6 +16,7 @@ import { StarknetProvider } from "./providers/StarknetProvider.tsx";
 // import { registerServiceWorker } from "./utils/registerServiceWorker.ts";
 import { ChakraBaseProvider, extendTheme } from "@chakra-ui/react";
 import customTheme from "./theme/theme";
+import { init as start } from "garaga";
 
 const I18N_NAMESPACES = [
   "game",
@@ -60,8 +61,9 @@ async function init() {
 
   try {
     const setupPromise = setup(dojoConfig);
+    const garagaPromise = start();
 
-    const [setupResult] = await Promise.all([setupPromise]);
+    const [setupResult] = await Promise.all([setupPromise, garagaPromise]);
 
     setCanFadeOut(true);
 

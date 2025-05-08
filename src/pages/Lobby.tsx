@@ -3,7 +3,8 @@ import { useGameContext } from "../providers/GameProvider";
 import { useCells } from "../dojo/queries/useCells";
 
 export const Lobby = () => {
-  const { executeCreateGame, joinGame } = useGameContext();
+  const { executeCreateGame, joinGame, submitWolfCommitment } =
+    useGameContext();
 
   let cells = useCells();
 
@@ -20,7 +21,8 @@ export const Lobby = () => {
       </Button>
       <Button
         onClick={() => {
-          joinGame(1);
+          joinGame(3);
+          submitWolfCommitment(3, 1);
         }}
       >
         Join
