@@ -87,16 +87,16 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const ExecuteSubmitWolfCommitment = async (
     gameId: number,
-    selectedWolfIndex: number
+    selectedSheepValue: number
   ) => {
     try {
       const wolfSalt = generateRandomSalt();
       const wolfCommitment = poseidonHashBN254(
         BigInt(wolfSalt),
-        BigInt(selectedWolfIndex)
+        BigInt(selectedSheepValue)
       );
 
-      localStorage.setItem(WOLF_INDEX, selectedWolfIndex.toString());
+      localStorage.setItem(WOLF_INDEX, selectedSheepValue.toString());
       localStorage.setItem(WOLF_SALT, wolfSalt.toString());
 
       submitWolfCommitment(gameId, Number(wolfCommitment)).then(() => {
