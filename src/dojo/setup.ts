@@ -74,8 +74,7 @@ export async function setup({ ...config }: DojoConfig) {
     [],
     [],
     [],
-    3000,
-    true
+    3000
   );
 
   return {

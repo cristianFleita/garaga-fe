@@ -6,19 +6,15 @@ import {
   showTransactionToast,
   updateTransactionToast,
 } from "../utils/transactionNotifications";
-
-// import { useSettings } from "../providers/SettingsProvider";
+import { getEventKey } from "../utils/getEventKey";
+import { DojoEvents } from "../enums/dojoEvents";
+import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent";
 
 const createGameEmptyResponse = {
   gameId: 0,
-  hand: [],
 };
 
-// const CREATE_GAME_EVENT_KEY = getEventKey(DojoEvents.CREATE_GAME);
-
-const MINT_GAME_EVENT_KEY =
-  import.meta.env.VITE_MINT_GAME_EVENT_KEY ||
-  "0x2f01dd863550300355e99ebfc08524ac0d60d424c59eda114a54140df28d8ac";
+const CREATE_GAME_EVENT_KEY = getEventKey(DojoEvents.CREATE_GAME);
 
 export const useGameActions = () => {
   const {
@@ -42,20 +38,19 @@ export const useGameActions = () => {
         const events = tx.events;
         // TODO: Get game id form the events
 
-        // console.log(
-        //   "events",
-        //   events.filter((event) => event.keys[1] === CREATE_GAME_EVENT_KEY)
-        // );
-        // const gameId = getNumberValueFromEvents(
-        //   events,
-        //   CREATE_GAME_EVENT_KEY,
-        //   3
-        // );
-        // console.log("Game " + gameId + " created");
+        console.log(
+          "events",
+          events.filter((event) => event.keys[1] === CREATE_GAME_EVENT_KEY)
+        );
+        const gameId = getNumberValueFromEvents(
+          events,
+          CREATE_GAME_EVENT_KEY,
+          3
+        );
+        console.log("Game " + gameId + " created");
 
         return {
-          // gameId,
-          // hand: getCardsFromEvents(events),
+          gameId,
         };
       } else {
         console.error("Error creating game:", tx);
