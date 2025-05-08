@@ -57,20 +57,36 @@ export const Lobby = () => {
         variant={"secondarySolid"}
         onClick={() => {
           submitWolfCommitment(1);
+        }}
+      >
+        Submit Commitment
+      </Button>
+
+      <Button
+        variant={"secondarySolid"}
+        onClick={() => {
           wolfKillSheep(2);
         }}
       >
-        Submit and kill sheep
+        Kill sheep
       </Button>
 
       <Button
         variant={"secondarySolid"}
         onClick={() => {
           shepherdMarkSuspicious(4);
+        }}
+      >
+        Select sheep
+      </Button>
+
+      <Button
+        variant={"secondarySolid"}
+        onClick={() => {
           checkIsWolf();
         }}
       >
-        Select sheep and check
+        check is wolf
       </Button>
     </MenuContainer>
   );
