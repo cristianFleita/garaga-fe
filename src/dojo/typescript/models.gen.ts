@@ -61,6 +61,17 @@ export interface RoundValue {
 	current_turn: string;
 }
 
+// Type definition for `dojo_starter::models::CreateGameEvent` struct
+export interface CreateGameEvent {
+	player: string;
+	game_id: BigNumberish;
+}
+
+// Type definition for `dojo_starter::models::CreateGameEventValue` struct
+export interface CreateGameEventValue {
+	game_id: BigNumberish;
+}
+
 // Type definition for `dojo_starter::models::GameState` enum
 export type GameState = {
 	WaitingForPlayer2: string;
@@ -87,6 +98,8 @@ export interface SchemaType extends ISchemaType {
 		GameValue: GameValue,
 		Round: Round,
 		RoundValue: RoundValue,
+		CreateGameEvent: CreateGameEvent,
+		CreateGameEventValue: CreateGameEventValue,
 	},
 }
 export const schema: SchemaType = {
@@ -154,6 +167,13 @@ export const schema: SchemaType = {
 			suspicious_sheep_index: 0,
 			current_turn: "",
 		},
+		CreateGameEvent: {
+			player: "",
+			game_id: 0,
+		},
+		CreateGameEventValue: {
+			game_id: 0,
+		},
 	},
 };
 export enum ModelsMapping {
@@ -165,4 +185,6 @@ export enum ModelsMapping {
 	Round = 'dojo_starter-Round',
 	RoundState = 'dojo_starter-RoundState',
 	RoundValue = 'dojo_starter-RoundValue',
+	CreateGameEvent = 'dojo_starter-CreateGameEvent',
+	CreateGameEventValue = 'dojo_starter-CreateGameEventValue',
 }

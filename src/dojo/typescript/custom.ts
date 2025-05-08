@@ -1,21 +1,24 @@
-export enum EventTypeEnum {
-	Cash,
-	Club,
-	Diamond,
-	Point,
-	Multi,
-	Neon,
-	Spade,
-	Heart,
-  }
+// export enum EventTypeEnum {
+//   Cash,
+//   Club,
+//   Diamond,
+//   Point,
+//   Multi,
+//   Neon,
+//   Spade,
+//   Heart,
+// }
 
 export enum GameStateEnum {
-	Round = "Round",
-	Rage = "Rage",
-	Reward = "Reward",
-	Challenge = "Challenge",
-	Map = "Map",
-	Store = "Store",
-	Lootbox = "Lootbox",
-	GameOver = "GameOver",
+  Waiting = "WaitingForPlayer2",
+  NotStarted = "NotStarted",
+  InProgress = "InProgress",
+  Finished = "Finished",
+}
+
+export enum RoundStateEnum {
+  WaitingForWolfCommitment = "WaitingForWolfCommitment",
+  WaitingForSheepToKill = "WaitingForSheepToKill",
+  WaitingForWolfSelection = "WaitingForWolfSelection",
+  WaitingForWolfResult = "WaitingForWolfResult",
 }
