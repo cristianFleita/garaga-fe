@@ -1,9 +1,10 @@
 import { Flex } from "@chakra-ui/react";
 import { BROWN, BROWN_DARK } from "../theme/colors";
 
-export const MenuContainer: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const MenuContainer: React.FC<{
+  children: React.ReactNode;
+  full?: boolean;
+}> = ({ children, full }) => {
   return (
     <Flex
       flexDirection="column"
@@ -14,6 +15,7 @@ export const MenuContainer: React.FC<{ children: React.ReactNode }> = ({
       py={12}
       gap={8}
       borderRadius={8}
+      height={full ? "100%" : "auto"}
     >
       {children}
     </Flex>
