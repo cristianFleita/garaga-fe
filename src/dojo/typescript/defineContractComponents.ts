@@ -79,7 +79,8 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
-          id: RecsType.Number,
+          game_id: RecsType.Number,
+          idx: RecsType.Number,
           value: RecsType.Number,
           is_alive: RecsType.Boolean,
         },

@@ -4,7 +4,8 @@ import { CairoCustomEnum, BigNumberish } from 'starknet';
 
 // Type definition for `dojo_starter::models::Cell` struct
 export interface Cell {
-	id: BigNumberish;
+	game_id: BigNumberish;
+	idx: BigNumberish;
 	value: BigNumberish;
 	is_alive: boolean;
 }
@@ -105,7 +106,8 @@ export interface SchemaType extends ISchemaType {
 export const schema: SchemaType = {
 	dojo_starter: {
 		Cell: {
-			id: 0,
+			game_id: 0,
+			idx: 0,
 			value: 0,
 			is_alive: false,
 		},
