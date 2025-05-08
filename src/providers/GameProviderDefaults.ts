@@ -6,4 +6,5 @@ export const gameProviderDefaults: IGameContext = {
   joinGame: (_) => {},
   submitWolfCommitment: (_) => {},
   checkOrCreateGame: () => {},
+  wolfKillSheep: (_) => {},
 };

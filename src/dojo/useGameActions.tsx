@@ -121,8 +121,38 @@ export const useGameActions = () => {
     }
   };
 
+  const wolfKillSheep = async (gameId: number, sheepToKillIndex: number) => {
+    try {
+      showTransactionToast();
+      const response = await client.game_system.wolfKillSheep(
+        account,
+        gameId,
+        sheepToKillIndex
+      );
+      const transaction_hash = response?.transaction_hash ?? "";
+      showTransactionToast(transaction_hash, "Trying to kill sheep...");
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      updateTransactionToast(transaction_hash, tx.isSuccess());
+      if (tx.isSuccess()) {
+        const events = tx.events;
+
+        return {};
+      } else {
+        console.error("Error killing sheep ", tx);
+        return {};
+      }
+    } catch (e) {
+      failedTransactionToast();
+      console.log(e);
+      return {};
+    }
+  };
+
   // TODO:
-  // - wolf_kill_sheep
   // - shepherd_mark_suspicious
   // - check_is_wolf
 
@@ -130,5 +160,6 @@ export const useGameActions = () => {
     createGame,
     joinGame,
     submitWolfCommitment,
+    wolfKillSheep,
   };
 };
