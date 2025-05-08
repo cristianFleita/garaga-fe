@@ -5,6 +5,7 @@ import { AppRoutes } from "./AppRoutes";
 import customTheme from "./theme/theme";
 import { GameProvider } from "./providers/GameProvider";
 import { InformationPopUpProvider } from "./providers/InformationPopUpProvider";
+import { PreThemeLoadingPage } from "./pages/PreThemeLoadingPage";
 
 function App() {
   const theme = extendTheme(customTheme);
@@ -13,7 +14,9 @@ function App() {
     <ChakraBaseProvider theme={theme}>
       <GameProvider>
         <InformationPopUpProvider>
-          <AppRoutes />
+          <PreThemeLoadingPage>
+            <AppRoutes />
+          </PreThemeLoadingPage>
         </InformationPopUpProvider>
       </GameProvider>
     </ChakraBaseProvider>
