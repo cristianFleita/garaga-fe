@@ -3,14 +3,24 @@ import { useGameContext } from "../providers/GameProvider";
 import { useCells } from "../dojo/queries/useCells";
 import { useState } from "react";
 import { MenuContainer } from "../components/MenuContainer";
+import { useGame } from "../dojo/queries/useGame";
+import { useRound } from "../dojo/queries/useRound";
 
 export const Lobby = () => {
-  const { executeCreateGame, joinGame } = useGameContext();
+  const {
+    executeCreateGame,
+    joinGame,
+    submitWolfCommitment,
+    wolfKillSheep,
+    shepherdMarkSuspicious,
+    checkIsWolf,
+  } = useGameContext();
   const [gameId, setGameId] = useState("");
 
-  let cells = useCells();
-
-  console.log(cells);
+  //   let cells = useCells();
+  //   console.log(cells);
+  console.log(useGame());
+  console.log(useRound());
 
   return (
     <MenuContainer>
@@ -41,6 +51,42 @@ export const Lobby = () => {
         }}
       >
         Create Game
+      </Button>
+
+      <Button
+        variant={"secondarySolid"}
+        onClick={() => {
+          submitWolfCommitment(1);
+        }}
+      >
+        Submit Commitment
+      </Button>
+
+      <Button
+        variant={"secondarySolid"}
+        onClick={() => {
+          wolfKillSheep(2);
+        }}
+      >
+        Kill sheep
+      </Button>
+
+      <Button
+        variant={"secondarySolid"}
+        onClick={() => {
+          shepherdMarkSuspicious(4);
+        }}
+      >
+        Select sheep
+      </Button>
+
+      <Button
+        variant={"secondarySolid"}
+        onClick={() => {
+          checkIsWolf();
+        }}
+      >
+        check is wolf
       </Button>
     </MenuContainer>
   );

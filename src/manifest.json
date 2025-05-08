@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x340ae3667197cf04ded5846aca057e8734148d27e8e3e188e53a63364b91b05",
-      "class_hash": "0x4a7180a9b0c63f23fd56049eaac2ef844430fbda56103ff8e0912b65e2be91b",
+      "address": "0x5c1bbb435aa72234a0025a46ace815ed19daa50d685c3bf2b3ee9eff7cf4f53",
+      "class_hash": "0x7815615b5e6c691436f28b6582eeb251cef5e9e228587728562978682488197",
       "abi": [
         {
           "type": "impl",
@@ -1385,16 +1385,6 @@
           ]
         },
         {
-          "type": "struct",
-          "name": "core::array::Span::<core::felt252>",
-          "members": [
-            {
-              "name": "snapshot",
-              "type": "@core::array::Array::<core::felt252>"
-            }
-          ]
-        },
-        {
           "type": "interface",
           "name": "dojo_starter::systems::game_system::IGameSystem",
           "items": [
@@ -1446,10 +1436,6 @@
                   "type": "core::integer::u32"
                 },
                 {
-                  "name": "proof",
-                  "type": "core::array::Span::<core::felt252>"
-                },
-                {
                   "name": "sheep_to_kill_index",
                   "type": "core::integer::u32"
                 }
@@ -1480,10 +1466,6 @@
                 {
                   "name": "game_id",
                   "type": "core::integer::u32"
-                },
-                {
-                  "name": "proof",
-                  "type": "core::array::Span::<core::felt252>"
                 }
               ],
               "outputs": [],

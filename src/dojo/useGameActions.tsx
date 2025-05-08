@@ -80,24 +80,148 @@ export const useGameActions = () => {
 
         return {};
       } else {
-        console.error("Error creating game:", tx);
-        return createGameEmptyResponse;
+        console.error("Error joining game:", tx);
+        return {};
       }
     } catch (e) {
       failedTransactionToast();
       console.log(e);
-      return createGameEmptyResponse;
+      return {};
+    }
+  };
+
+  const submitWolfCommitment = async (gameId: number, commitment: number) => {
+    try {
+      showTransactionToast();
+      const response = await client.game_system.submitWolfCommitment(
+        account,
+        gameId,
+        commitment
+      );
+      const transaction_hash = response?.transaction_hash ?? "";
+      showTransactionToast(transaction_hash, "Submitting wolf commitment ...");
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      updateTransactionToast(transaction_hash, tx.isSuccess());
+      if (tx.isSuccess()) {
+        const events = tx.events;
+
+        return {};
+      } else {
+        console.error("Error submitting commitment ", tx);
+        return {};
+      }
+    } catch (e) {
+      failedTransactionToast();
+      console.log(e);
+      return {};
+    }
+  };
+
+  const wolfKillSheep = async (gameId: number, sheepToKillIndex: number) => {
+    try {
+      showTransactionToast();
+      const response = await client.game_system.wolfKillSheep(
+        account,
+        gameId,
+        sheepToKillIndex
+      );
+      const transaction_hash = response?.transaction_hash ?? "";
+      showTransactionToast(transaction_hash, "Trying to kill sheep...");
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      updateTransactionToast(transaction_hash, tx.isSuccess());
+      if (tx.isSuccess()) {
+        const events = tx.events;
+
+        return {};
+      } else {
+        console.error("Error killing sheep ", tx);
+        return {};
+      }
+    } catch (e) {
+      failedTransactionToast();
+      console.log(e);
+      return {};
+    }
+  };
+
+  const shepherdMarkSuspicious = async (
+    gameId: number,
+    suspectSheepIndex: number
+  ) => {
+    try {
+      showTransactionToast();
+      const response = await client.game_system.shepherdMarkSuspicious(
+        account,
+        gameId,
+        suspectSheepIndex
+      );
+      const transaction_hash = response?.transaction_hash ?? "";
+      showTransactionToast(transaction_hash, "Shepherd marking sheep...");
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      updateTransactionToast(transaction_hash, tx.isSuccess());
+      if (tx.isSuccess()) {
+        const events = tx.events;
+
+        return {};
+      } else {
+        console.error("Error marking sheep", tx);
+        return {};
+      }
+    } catch (e) {
+      failedTransactionToast();
+      console.log(e);
+      return {};
+    }
+  };
+
+  const checkIsWolf = async (gameId: number) => {
+    try {
+      showTransactionToast();
+      const response = await client.game_system.checkIsWolf(account, gameId);
+      const transaction_hash = response?.transaction_hash ?? "";
+      showTransactionToast(transaction_hash, "Check sheep marked is wolf...");
+
+      const tx = await account.waitForTransaction(transaction_hash, {
+        retryInterval: 100,
+      });
+
+      updateTransactionToast(transaction_hash, tx.isSuccess());
+      if (tx.isSuccess()) {
+        const events = tx.events;
+
+        return {};
+      } else {
+        console.error("Error checking wolf", tx);
+        return {};
+      }
+    } catch (e) {
+      failedTransactionToast();
+      console.log(e);
+      return {};
     }
   };
 
   // TODO:
-  // - submit_wolf_commitment
-  // - wolf_kill_sheep
-  // - shepherd_mark_suspicious
   // - check_is_wolf
 
   return {
     createGame,
     joinGame,
+    submitWolfCommitment,
+    wolfKillSheep,
+    shepherdMarkSuspicious,
+    checkIsWolf,
   };
 };
