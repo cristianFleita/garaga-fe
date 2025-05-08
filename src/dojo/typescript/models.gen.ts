@@ -4,7 +4,8 @@ import { CairoCustomEnum, BigNumberish } from 'starknet';
 
 // Type definition for `dojo_starter::models::Cell` struct
 export interface Cell {
-	id: BigNumberish;
+	game_id: BigNumberish;
+	idx: BigNumberish;
 	value: BigNumberish;
 	is_alive: boolean;
 }
@@ -61,6 +62,17 @@ export interface RoundValue {
 	current_turn: string;
 }
 
+// Type definition for `dojo_starter::models::CreateGameEvent` struct
+export interface CreateGameEvent {
+	player: string;
+	game_id: BigNumberish;
+}
+
+// Type definition for `dojo_starter::models::CreateGameEventValue` struct
+export interface CreateGameEventValue {
+	game_id: BigNumberish;
+}
+
 // Type definition for `dojo_starter::models::GameState` enum
 export type GameState = {
 	WaitingForPlayer2: string;
@@ -87,12 +99,15 @@ export interface SchemaType extends ISchemaType {
 		GameValue: GameValue,
 		Round: Round,
 		RoundValue: RoundValue,
+		CreateGameEvent: CreateGameEvent,
+		CreateGameEventValue: CreateGameEventValue,
 	},
 }
 export const schema: SchemaType = {
 	dojo_starter: {
 		Cell: {
-			id: 0,
+			game_id: 0,
+			idx: 0,
 			value: 0,
 			is_alive: false,
 		},
@@ -154,6 +169,13 @@ export const schema: SchemaType = {
 			suspicious_sheep_index: 0,
 			current_turn: "",
 		},
+		CreateGameEvent: {
+			player: "",
+			game_id: 0,
+		},
+		CreateGameEventValue: {
+			game_id: 0,
+		},
 	},
 };
 export enum ModelsMapping {
@@ -165,4 +187,6 @@ export enum ModelsMapping {
 	Round = 'dojo_starter-Round',
 	RoundState = 'dojo_starter-RoundState',
 	RoundValue = 'dojo_starter-RoundValue',
+	CreateGameEvent = 'dojo_starter-CreateGameEvent',
+	CreateGameEventValue = 'dojo_starter-CreateGameEventValue',
 }
