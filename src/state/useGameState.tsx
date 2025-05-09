@@ -84,6 +84,7 @@ export const useGameState = () => {
                 ? CellType.SHEEP
                 : CellType.SHEEP_DEAD,
           value: cell.value,
+          idx: cell.idx,
         }))
       );
     }

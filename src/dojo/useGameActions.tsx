@@ -213,9 +213,6 @@ export const useGameActions = () => {
     }
   };
 
-  // TODO:
-  // - check_is_wolf
-
   return {
     createGame,
     joinGame,

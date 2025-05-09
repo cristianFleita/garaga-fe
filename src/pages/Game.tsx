@@ -14,6 +14,7 @@ import { useUsername } from "../dojo/utils/useUsername";
 import { useGameContext } from "../providers/GameProvider";
 import { useRound } from "../dojo/queries/useRound";
 import { useGame } from "../dojo/queries/useGame";
+import { GridCell } from "../types/GameGrid";
 
 enum CharacterIdEnum {
   SHEPHERD = 1,
@@ -41,9 +42,7 @@ export const Game = () => {
 
   const [gameOver, setGameOver] = useState(false);
 
-  const [selectedCellValue, setSelectedCellValue] = useState<number | null>(
-    null
-  );
+  const [selectedCell, setSelectedCell] = useState<GridCell | null>(null);
 
   useEffect(() => {
     if (account !== masterAccount && username) {
@@ -87,14 +86,14 @@ export const Game = () => {
               }
               showHideButton={canHide}
               showChooseButton={canChoose}
-              selectedCellValue={selectedCellValue}
+              selectedCell={selectedCell}
             />
             <Flex flexDirection={"column"} height={"100%"} width={"40%"}>
               <MenuContainer full>
                 <GameGrid
                   cells={gridCells}
                   canSelect={isPlayerTurn}
-                  setSelectedCellValue={setSelectedCellValue}
+                  setSelectedCell={setSelectedCell}
                 />
               </MenuContainer>
             </Flex>

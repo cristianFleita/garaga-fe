@@ -1,4 +1,4 @@
-import { PropsWithChildren, createContext, useContext } from "react";
+import { PropsWithChildren, createContext, useContext, useEffect } from "react";
 import { gameProviderDefaults } from "./GameProviderDefaults";
 import { useGameState } from "../state/useGameState";
 import { useGameActions } from "../dojo/useGameActions";
@@ -8,8 +8,9 @@ import { poseidonHashBN254 } from "garaga";
 import { gameExists } from "../dojo/utils/getGame";
 import { useDojo } from "../dojo/DojoContext";
 import { useNavigate } from "react-router-dom";
-import { Cell } from "../types/Cell";
 import { GridCell } from "../types/GameGrid";
+import { useRound } from "../dojo/queries/useRound";
+import { RoundStateEnum } from "../dojo/typescript/custom";
 
 export interface IGameContext {
   gameId: number;
@@ -43,6 +44,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const navigate = useNavigate();
   const state = useGameState();
+  const round = useRound();
 
   const { gameId, setGameId, gridCells, isWolf, isPlayerTurn } = state;
 
@@ -58,6 +60,15 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   function generateRandomSalt() {
     return BigInt(Math.floor(Math.random() * Number.MAX_SAFE_INTEGER));
   }
+
+  useEffect(() => {
+    if (
+      round?.state.toString() == RoundStateEnum.WaitingForWolfResult &&
+      isWolf
+    ) {
+      executeCheckIsWolf();
+    }
+  }, [round?.state]);
 
   // TODO: Use on game page
   const checkOrCreateGame = async () => {

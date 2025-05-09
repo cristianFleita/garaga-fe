@@ -2,19 +2,20 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import { BROWN, BROWN_DARKEST } from "../theme/colors";
 import { characterImageMap } from "../constants/characterMap";
 import { useGameContext } from "../providers/GameProvider";
+import { GridCell } from "../types/GameGrid";
 
 interface GameSidebarMenuProps {
   showHideButton?: boolean;
   showChooseButton?: boolean;
   characterId: number;
-  selectedCellValue: number | null;
+  selectedCell: GridCell | null;
 }
 
 export const GameSidebarMenu = ({
   showHideButton = true,
   showChooseButton = true,
   characterId,
-  selectedCellValue,
+  selectedCell,
 }: GameSidebarMenuProps) => {
   const characterImage = characterImageMap[characterId];
 
@@ -22,9 +23,9 @@ export const GameSidebarMenu = ({
     submitWolfCommitment,
     wolfKillSheep,
     shepherdMarkSuspicious,
-    checkIsWolf,
+    isWolf,
   } = useGameContext();
-  console.log(selectedCellValue);
+  console.log(selectedCell);
   return (
     <Flex
       flexDirection="column"
@@ -38,13 +39,23 @@ export const GameSidebarMenu = ({
           <Button
             variant="secondarySolid"
             onClick={() => {
-              submitWolfCommitment(selectedCellValue ?? 0);
+              submitWolfCommitment(selectedCell?.value ?? 0);
             }}
           >
             Hide
           </Button>
         )}
-        {showChooseButton && <Button variant="secondarySolid">Choose</Button>}
+        {showChooseButton && (
+          <Button
+            variant="secondarySolid"
+            onClick={() => {
+              if (isWolf) wolfKillSheep(selectedCell?.idx ?? 0);
+              else shepherdMarkSuspicious(selectedCell?.idx ?? 0);
+            }}
+          >
+            Choose
+          </Button>
+        )}
       </Flex>
       <Flex flexDirection={"column"}>
         <Box

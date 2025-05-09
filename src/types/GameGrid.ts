@@ -7,10 +7,12 @@ export enum CellType {
 
 export interface GridCell {
   type: CellType;
+  idx: number;
   value: number;
 }
 
 export const EmptyGridCell: GridCell = {
   type: CellType.EMPTY,
+  idx: -1,
   value: -1,
 };
