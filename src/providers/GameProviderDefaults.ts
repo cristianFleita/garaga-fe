@@ -15,4 +15,5 @@ export const gameProviderDefaults: IGameContext = {
   isPlayerTurn: false,
   canHide: false,
   canChoose: false,
+  gameOver: false,
 };
