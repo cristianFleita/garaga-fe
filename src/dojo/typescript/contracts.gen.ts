@@ -14,23 +14,25 @@ const DOJO_NAMESPACE =
 
 export function setupWorld(provider: DojoProvider) {
   const build_game_system_checkIsWolf_calldata = (
-    gameId: BigNumberish
+    gameId: BigNumberish,
+    proof: Array<BigNumberish>
   ): DojoCall => {
     return {
       contractName: "game_system",
       entrypoint: "check_is_wolf",
-      calldata: [gameId],
+      calldata: [gameId, proof],
     };
   };
 
   const game_system_checkIsWolf = async (
     snAccount: Account | AccountInterface,
-    gameId: BigNumberish
+    gameId: BigNumberish,
+    proof: Array<BigNumberish>
   ) => {
     try {
       return await provider.execute(
         snAccount as any,
-        build_game_system_checkIsWolf_calldata(gameId),
+        build_game_system_checkIsWolf_calldata(gameId, proof),
         DOJO_NAMESPACE
       );
     } catch (error) {
@@ -149,24 +151,30 @@ export function setupWorld(provider: DojoProvider) {
 
   const build_game_system_wolfKillSheep_calldata = (
     gameId: BigNumberish,
+    proof: Array<BigNumberish>,
     sheepToKillIndex: BigNumberish
   ): DojoCall => {
     return {
       contractName: "game_system",
       entrypoint: "wolf_kill_sheep",
-      calldata: [gameId, sheepToKillIndex],
+      calldata: [gameId, proof, sheepToKillIndex],
     };
   };
 
   const game_system_wolfKillSheep = async (
     snAccount: Account | AccountInterface,
     gameId: BigNumberish,
+    proof: Array<BigNumberish>,
     sheepToKillIndex: BigNumberish
   ) => {
     try {
       return await provider.execute(
         snAccount as any,
-        build_game_system_wolfKillSheep_calldata(gameId, sheepToKillIndex),
+        build_game_system_wolfKillSheep_calldata(
+          gameId,
+          proof,
+          sheepToKillIndex
+        ),
         DOJO_NAMESPACE
       );
     } catch (error) {
