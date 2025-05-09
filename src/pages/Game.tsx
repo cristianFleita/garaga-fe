@@ -14,7 +14,6 @@ import { useUsername } from "../dojo/utils/useUsername";
 import { useGameContext } from "../providers/GameProvider";
 import { useRound } from "../dojo/queries/useRound";
 import { useGame } from "../dojo/queries/useGame";
-import { CellType, GridCell } from "../types/GameGrid";
 
 enum CharacterIdEnum {
   SHEPHERD = 1,
@@ -30,11 +29,21 @@ export const Game = () => {
   const username = useUsername();
   const round = useRound();
   const game = useGame();
-  const { checkOrCreateGame, showWaitForPlayer, gridCells, isWolf } =
-    useGameContext();
+  const {
+    checkOrCreateGame,
+    showWaitForPlayer,
+    gridCells,
+    isWolf,
+    isPlayerTurn,
+    canHide,
+    canChoose,
+  } = useGameContext();
 
   const [gameOver, setGameOver] = useState(false);
-  console.log(isWolf);
+
+  const [selectedCellValue, setSelectedCellValue] = useState<number | null>(
+    null
+  );
 
   useEffect(() => {
     if (account !== masterAccount && username) {
@@ -76,14 +85,16 @@ export const Game = () => {
               characterId={
                 isWolf ? CharacterIdEnum.WOLF : CharacterIdEnum.SHEPHERD
               }
-              showHideButton={gameMock.showHideBtn}
-              showChooseButton={gameMock.showChooseBtn}
+              showHideButton={canHide}
+              showChooseButton={canChoose}
+              selectedCellValue={selectedCellValue}
             />
             <Flex flexDirection={"column"} height={"100%"} width={"40%"}>
               <MenuContainer full>
                 <GameGrid
                   cells={gridCells}
-                  canSelect={gameMock.canSelectGrid}
+                  canSelect={isPlayerTurn}
+                  setSelectedCellValue={setSelectedCellValue}
                 />
               </MenuContainer>
             </Flex>

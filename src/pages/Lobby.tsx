@@ -17,11 +17,6 @@ export const Lobby = () => {
   } = useGameContext();
   const [gameId, setGameId] = useState("");
 
-  //   let cells = useCells();
-  //   console.log(cells);
-  console.log(useGame());
-  console.log(useRound());
-
   return (
     <MenuContainer>
       <Flex gap={4}>

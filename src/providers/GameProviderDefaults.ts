@@ -12,4 +12,7 @@ export const gameProviderDefaults: IGameContext = {
   showWaitForPlayer: false,
   gridCells: [],
   isWolf: false,
+  isPlayerTurn: false,
+  canHide: false,
+  canChoose: false,
 };

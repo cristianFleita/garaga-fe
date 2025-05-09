@@ -23,6 +23,9 @@ export interface IGameContext {
   showWaitForPlayer: boolean;
   gridCells: GridCell[];
   isWolf: boolean;
+  isPlayerTurn: boolean;
+  canHide: boolean;
+  canChoose: boolean;
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
@@ -41,7 +44,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
   const state = useGameState();
 
-  const { gameId, setGameId, gridCells, isWolf } = state;
+  const { gameId, setGameId, gridCells, isWolf, isPlayerTurn } = state;
 
   const {
     createGame,

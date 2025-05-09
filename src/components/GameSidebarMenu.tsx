@@ -1,20 +1,30 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { BROWN, BROWN_DARKEST } from "../theme/colors";
 import { characterImageMap } from "../constants/characterMap";
+import { useGameContext } from "../providers/GameProvider";
 
 interface GameSidebarMenuProps {
   showHideButton?: boolean;
   showChooseButton?: boolean;
   characterId: number;
+  selectedCellValue: number | null;
 }
 
 export const GameSidebarMenu = ({
   showHideButton = true,
   showChooseButton = true,
   characterId,
+  selectedCellValue,
 }: GameSidebarMenuProps) => {
   const characterImage = characterImageMap[characterId];
 
+  const {
+    submitWolfCommitment,
+    wolfKillSheep,
+    shepherdMarkSuspicious,
+    checkIsWolf,
+  } = useGameContext();
+  console.log(selectedCellValue);
   return (
     <Flex
       flexDirection="column"
@@ -24,7 +34,16 @@ export const GameSidebarMenu = ({
       justifyContent={"space-around"}
     >
       <Flex flexDirection={"column"} gap={4}>
-        {showHideButton && <Button variant="secondarySolid">Hide</Button>}
+        {showHideButton && (
+          <Button
+            variant="secondarySolid"
+            onClick={() => {
+              submitWolfCommitment(selectedCellValue ?? 0);
+            }}
+          >
+            Hide
+          </Button>
+        )}
         {showChooseButton && <Button variant="secondarySolid">Choose</Button>}
       </Flex>
       <Flex flexDirection={"column"}>
