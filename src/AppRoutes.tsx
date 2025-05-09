@@ -4,6 +4,7 @@ import "./App.scss";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { Lobby } from "./pages/Lobby";
+import { Game } from "./pages/Game";
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -13,7 +14,7 @@ export const AppRoutes = () => {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/lobby" element={<Lobby />} />
-      {/* <Route path="/game" element={<Game />} /> */}
+      <Route path="/game" element={<Game />} />
     </Routes>
   );
 };

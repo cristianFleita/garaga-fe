@@ -3,8 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GAME_ID, LOGGED_USER } from "../constants/localStorage";
 import { useCustomToast } from "../hooks/useCustomToast";
-import { VIOLET } from "../theme/colors.tsx";
+import { VIOLET, YELLOW } from "../theme/colors.tsx";
 import { useUsername } from "../dojo/utils/useUsername.tsx";
+import { MenuContainer } from "../components/MenuContainer.tsx";
 
 const regExpression = /^[a-zA-Z0-9._-]+$/;
 
@@ -81,74 +82,46 @@ export const Login = () => {
         height="100%"
         width="100%"
       >
-        <Box
-          border="2px solid #DAA1E8FF"
-          boxShadow={`0px 0px 20px 15px ${VIOLET}`}
-          filter="blur(0.5px)"
-          backgroundColor="rgba(0, 0, 0, 1)"
-          borderRadius="20px"
-          display="grid"
-          px={[4, 8]}
-          py={4}
-          pl={[10, 12]}
-          width={{ base: "90%", sm: "600px" }}
-        >
-          <Heading variant="italic" color={VIOLET} size={"m"}>
-            {"Login"}
+        <MenuContainer>
+          <Heading fontSize={"xxl"} fontWeight={900} mb={4} color={`${YELLOW}`}>
+            Welcome
           </Heading>
-          <Box
-            pt={3}
-            mb={6}
-            w="95%"
-            sx={{
-              position: "relative",
-              "&::after": {
-                content: '""',
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                width: "100%",
-                height: "1px",
-                background: "white",
-                boxShadow:
-                  "0 0 1px 0px rgba(255, 255, 255), 0 0 8px 1px rgba(255, 255, 255)",
-              },
-            }}
-          >
+          <Flex gap={4}>
             <Input
-              variant="neon-white"
-              id="usernameInputField"
               type="text"
-              placeholder={"Enter your username"}
+              id="usernameInputField"
+              variant={"solid"}
+              placeholder="Username"
               ref={inputRef}
               maxLength={15}
               onChange={(e) => {
                 setUsername(e.target.value.trim());
               }}
             />
-          </Box>
-        </Box>
-        <Flex
-          justifyContent="space-between"
-          width={{ base: "90%", sm: "600px" }}
-          pt={{ base: 10, sm: 14 }}
-        >
-          <Button
-            width="46%"
-            onClick={() => {
-              navigate("/");
-            }}
+            <Button
+              width="46%"
+              onClick={validateAndCreateUser}
+              variant="secondarySolid"
+            >
+              {"Login"}
+            </Button>
+          </Flex>
+          <Flex
+            justifyContent="center"
+            width={{ base: "90%", sm: "600px" }}
+            pt={4}
           >
-            {"Back"}
-          </Button>
-          <Button
-            width="46%"
-            onClick={validateAndCreateUser}
-            variant="secondarySolid"
-          >
-            {"Login"}
-          </Button>
-        </Flex>
+            <Button
+              variant={"secondarySolid"}
+              width="46%"
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              {"Back"}
+            </Button>
+          </Flex>
+        </MenuContainer>
       </Flex>
     </>
   );

@@ -10,6 +10,7 @@ export const GREEN = "#A19261";
 export const GREEN_DARK = "#7B6F51";
 export const BROWN = "#9D7D70";
 export const BROWN_DARK = "#68524A";
+export const BROWN_DARKEST = "#4F3D37";
 
 export const NEON_GREEN = "#20c6ed";
 export const NEON_PINK = "#A144B2";
