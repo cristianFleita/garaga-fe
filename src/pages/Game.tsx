@@ -4,17 +4,27 @@ import { GameSidebarMenu } from "../components/GameSidebarMenu";
 import { GameGrid } from "../components/GameGrid";
 import { GameHeader } from "../components/GameHeader";
 import { gameMockWolf as gameMock } from "../mocks/gameMock";
+import { playerLose as gameOverMock } from "../mocks/gameOverMock";
 import { useState } from "react";
 import { WaitForPlayerPopup } from "../components/popups/WaitForPlayerPopup";
 import { GameBackground } from "../components/GameBackground";
+import { GameoverPopup } from "../components/popups/GameoverPopup";
 
 export const Game = () => {
   const [showWaitForPlayer, setShowWaitForPlayer] = useState(false);
+  const [gameOver, setGameOver] = useState(true);
 
   return (
     <GameBackground>
       <>
         {showWaitForPlayer && <WaitForPlayerPopup />}
+        {gameOver && (
+          <GameoverPopup
+            player={gameOverMock.player}
+            oponent={gameOverMock.oponent}
+            winner={gameOverMock.winner}
+          />
+        )}
         <GameHeader username={gameMock.username} round={gameMock.round} />
         <Flex
           flexDirection={"column"}
