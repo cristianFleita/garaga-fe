@@ -1,8 +1,8 @@
 {
   "world": {
     "class_hash": "0x7c9469d45a9cdbab775035afb48e1fa73fb35ab059fcb9dfb0a301aa973e783",
-    "address": "0x65ee8188c171a836294feaa931f1c78b5f18957791c039e84ee40b4b3e85d3e",
-    "seed": "dojo_starter",
+    "address": "0xeb8bdd3fa6d122b7b4586f43894074e69a93a7d14197e24c99147e9318e2b8",
+    "seed": "dojo_starter_zk1",
     "name": "Dojo starter",
     "entrypoints": [
       "uuid",
@@ -1312,8 +1312,8 @@
   },
   "contracts": [
     {
-      "address": "0x68a1211aad1d92029fff47af8f3bb7694e59efa6c17f08a85e473bfbf93ac8",
-      "class_hash": "0x4507cb7baf091c68c77cbdcdb29dde9e300991c9aa675c5198f2e4972c58e15",
+      "address": "0x1d4706a10f14f47b4754037bd5bf76b6bb8b94f657a0d1621768850a50c32b0",
+      "class_hash": "0x2329c10aa188e4ddbee95bb5fb37fcde23cae1de019fe34977869d970141977",
       "abi": [
         {
           "type": "impl",
@@ -1589,8 +1589,8 @@
         }
       ],
       "init_calldata": [],
-      "tag": "dojo_starter-game_system",
-      "selector": "0x3b1287cc2ce7b6964e5353f15d7f31740055cd4ef5bb100d2cd3fae543c4596",
+      "tag": "wolf_game_zk3-game_system",
+      "selector": "0x740051e2a84012e9dd9c82bbface89e7ab370edb5d2e57f47907449d5d32463",
       "systems": [
         "create_game",
         "join_game",
@@ -1607,28 +1607,28 @@
     {
       "members": [],
       "class_hash": "0x54f73635043810d547d3891d2cf5d2c7ae0f7a42eee40c5ca842059121da323",
-      "tag": "dojo_starter-Cell",
-      "selector": "0x6ac42f434e992299d0e07457d8eef52da413f92167d16d9a6252daaffdfbe4"
+      "tag": "wolf_game_zk3-Cell",
+      "selector": "0x6c73d677274efa133fa5e5e92e1fb0ab77d9c93fe00f38809b8e8f35b603b2f"
     },
     {
       "members": [],
       "class_hash": "0xed4f82c4baa6fa377c7f9e6a2bee82322dea801c6be87b66270f0c23c1a4a8",
-      "tag": "dojo_starter-Game",
-      "selector": "0x19e11cf1403e104998a158f43ec6ae232dc65cf5445bcb29fb9fb5b7bb6c171"
+      "tag": "wolf_game_zk3-Game",
+      "selector": "0x584b4d8a4c1cc90b33f590f221a29d888d9f81e38c9059d0a80d595d63d0d51"
     },
     {
       "members": [],
       "class_hash": "0x6e24f774c29682048aac477e4e92551442ccbc5454344550ccc560077971465",
-      "tag": "dojo_starter-Round",
-      "selector": "0x134ea5dcc03fa26c5aa03fc22c2c1be047c3d335eedb4ce229729c57f014c1"
+      "tag": "wolf_game_zk3-Round",
+      "selector": "0x266ea9f9e335f524666441dd9a878b9e8d28687945352442aabd60e75e9789b"
     }
   ],
   "events": [
     {
       "members": [],
       "class_hash": "0x73d4a9769254dffd5cd14f0ee9b00c34ddf6ffb7b516865235011f3f3788f35",
-      "tag": "dojo_starter-CreateGameEvent",
-      "selector": "0x25195e1658cc86324f0c2990edd7709eb7690d67b8543c12cb1ec779c6e45e2"
+      "tag": "wolf_game_zk3-CreateGameEvent",
+      "selector": "0x299cef9a7f73b5e514795908f42f385ef4857dae778d9b2a5455c9aef476ad5"
     }
   ],
   "external_contracts": []

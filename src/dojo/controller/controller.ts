@@ -37,7 +37,7 @@ const controllerOptions: ControllerOptions = {
   chains: [{ rpcUrl: RPC_URL }],
   defaultChainId,
   namespace: DOJO_NAMESPACE,
-  preset: "jokers-of-neon",
+  // preset: "jokers-of-neon",
 };
 
 if (CHAIN !== "mainnet" && CHAIN !== "sepolia") {
