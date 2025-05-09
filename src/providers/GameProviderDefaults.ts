@@ -9,4 +9,6 @@ export const gameProviderDefaults: IGameContext = {
   wolfKillSheep: (_) => {},
   shepherdMarkSuspicious: (_) => {},
   checkIsWolf: () => {},
+  showWaitForPlayer: false,
+  gridCells: [],
 };
