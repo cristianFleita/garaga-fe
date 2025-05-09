@@ -1,12 +1,16 @@
-import { PropsWithChildren, createContext, useContext } from "react";
+import { PropsWithChildren, createContext, useContext, useEffect } from "react";
 import { gameProviderDefaults } from "./GameProviderDefaults";
-import { useGameState } from "../state/useGameState";
+import { Player, useGameState } from "../state/useGameState";
 import { useGameActions } from "../dojo/useGameActions";
 import { GAME_ID, WOLF_INDEX, WOLF_SALT } from "../constants/localStorage";
 import { poseidonHashBN254 } from "garaga";
 
 import { gameExists } from "../dojo/utils/getGame";
 import { useDojo } from "../dojo/DojoContext";
+import { useNavigate } from "react-router-dom";
+import { GridCell } from "../types/GameGrid";
+import { useRound } from "../dojo/queries/useRound";
+import { RoundStateEnum } from "../dojo/typescript/custom";
 
 export interface IGameContext {
   gameId: number;
@@ -17,6 +21,17 @@ export interface IGameContext {
   wolfKillSheep: (sheepIdx: number) => void;
   shepherdMarkSuspicious: (sheepIdx: number) => void;
   checkIsWolf: () => void;
+  showWaitForPlayer: boolean;
+  gridCells: GridCell[];
+  isWolf: boolean;
+  isPlayerTurn: boolean;
+  canHide: boolean;
+  canChoose: boolean;
+  gameOver: boolean;
+  player: Player;
+  oponent: Player;
+  winner: boolean;
+  resetGame: () => void;
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
@@ -32,9 +47,24 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     },
   } = useDojo();
 
+  const navigate = useNavigate();
   const state = useGameState();
+  const round = useRound();
 
-  const { gameId, setGameId } = state;
+  const {
+    gameId,
+    setGameId,
+    gridCells,
+    isWolf,
+    isPlayerTurn,
+    canHide,
+    canChoose,
+    gameOver,
+    player,
+    oponent,
+    winner,
+    resetState,
+  } = state;
 
   const {
     createGame,
@@ -46,9 +76,17 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   } = useGameActions();
 
   function generateRandomSalt() {
-    // Generar un número aleatorio grande para usar como salt
     return BigInt(Math.floor(Math.random() * Number.MAX_SAFE_INTEGER));
   }
+
+  useEffect(() => {
+    if (
+      round?.state.toString() == RoundStateEnum.WaitingForWolfResult &&
+      isWolf
+    ) {
+      executeCheckIsWolf();
+    }
+  }, [round?.state]);
 
   // TODO: Use on game page
   const checkOrCreateGame = async () => {
@@ -76,7 +114,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
           localStorage.setItem(GAME_ID, newGameId.toString());
           console.log(`game ${newGameId} created`);
 
-          // TODO: navigate to game
+          navigate("/game");
         }
       });
     } catch {
@@ -87,7 +125,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const executeJoinGame = async (gameId: number) => {
     try {
       joinGame(gameId).then(() => {
-        // TODO: navigate to game
+        setGameId(gameId);
+        localStorage.setItem(GAME_ID, gameId.toString());
+        navigate("/game");
         console.log("Join into game: " + gameId);
       });
     } catch {
@@ -146,6 +186,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const resetGame = () => {
+    localStorage.removeItem(GAME_ID);
+    localStorage.removeItem(WOLF_INDEX);
+    localStorage.removeItem(WOLF_SALT);
+    resetState();
+  };
+
   const actions = {
     executeCreateGame,
     joinGame: executeJoinGame,
@@ -154,6 +201,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     wolfKillSheep: executeKillSheep,
     shepherdMarkSuspicious: executeMarkSheep,
     checkIsWolf: executeCheckIsWolf,
+    resetGame,
   };
 
   return (
@@ -161,6 +209,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       value={{
         ...state,
         ...actions,
+        gridCells,
+        isWolf,
       }}
     >
       {children}

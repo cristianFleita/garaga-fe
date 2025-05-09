@@ -9,6 +9,9 @@ import {
 } from "starknet";
 import * as models from "./models.gen";
 
+const DOJO_NAMESPACE =
+  import.meta.env.VITE_DOJO_NAMESPACE || "jokers_of_neon_core";
+
 export function setupWorld(provider: DojoProvider) {
   const build_game_system_checkIsWolf_calldata = (
     gameId: BigNumberish
@@ -28,7 +31,7 @@ export function setupWorld(provider: DojoProvider) {
       return await provider.execute(
         snAccount as any,
         build_game_system_checkIsWolf_calldata(gameId),
-        "dojo_starter"
+        DOJO_NAMESPACE
       );
     } catch (error) {
       console.error(error);
@@ -51,7 +54,7 @@ export function setupWorld(provider: DojoProvider) {
       return await provider.execute(
         snAccount as any,
         build_game_system_createGame_calldata(),
-        "dojo_starter"
+        DOJO_NAMESPACE
       );
     } catch (error) {
       console.error(error);
@@ -77,7 +80,7 @@ export function setupWorld(provider: DojoProvider) {
       return await provider.execute(
         snAccount as any,
         build_game_system_joinGame_calldata(gameId),
-        "dojo_starter"
+        DOJO_NAMESPACE
       );
     } catch (error) {
       console.error(error);
@@ -108,7 +111,7 @@ export function setupWorld(provider: DojoProvider) {
           gameId,
           sheepToMarkIndex
         ),
-        "dojo_starter"
+        DOJO_NAMESPACE
       );
     } catch (error) {
       console.error(error);
@@ -136,7 +139,7 @@ export function setupWorld(provider: DojoProvider) {
       return await provider.execute(
         snAccount as any,
         build_game_system_submitWolfCommitment_calldata(gameId, wolfCommitment),
-        "dojo_starter"
+        DOJO_NAMESPACE
       );
     } catch (error) {
       console.error(error);
@@ -164,7 +167,7 @@ export function setupWorld(provider: DojoProvider) {
       return await provider.execute(
         snAccount as any,
         build_game_system_wolfKillSheep_calldata(gameId, sheepToKillIndex),
-        "dojo_starter"
+        DOJO_NAMESPACE
       );
     } catch (error) {
       console.error(error);

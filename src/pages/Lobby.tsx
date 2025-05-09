@@ -17,11 +17,6 @@ export const Lobby = () => {
   } = useGameContext();
   const [gameId, setGameId] = useState("");
 
-  //   let cells = useCells();
-  //   console.log(cells);
-  console.log(useGame());
-  console.log(useRound());
-
   return (
     <MenuContainer>
       <Flex gap={4}>
@@ -53,7 +48,7 @@ export const Lobby = () => {
         Create Game
       </Button>
 
-      <Button
+      {/* <Button
         variant={"secondarySolid"}
         onClick={() => {
           submitWolfCommitment(1);
@@ -87,7 +82,7 @@ export const Lobby = () => {
         }}
       >
         check is wolf
-      </Button>
+      </Button> */}
     </MenuContainer>
   );
 };

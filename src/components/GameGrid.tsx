@@ -6,14 +6,19 @@ import { EmptyGridCell, GridCell } from "../types/GameGrid";
 interface GameGridProps {
   cells?: GridCell[];
   canSelect?: boolean;
+  setSelectedCell: (index: GridCell) => void;
 }
 
-export const GameGrid = ({ cells, canSelect = false }: GameGridProps) => {
+export const GameGrid = ({
+  cells,
+  canSelect = false,
+  setSelectedCell,
+}: GameGridProps) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-
-  const handleSelect = (index: number) => {
+  const handleSelect = (cell: GridCell) => {
     if (canSelect) {
-      setSelectedIndex(index);
+      setSelectedIndex(cell.idx);
+      setSelectedCell(cell);
     }
   };
 
@@ -27,6 +32,7 @@ export const GameGrid = ({ cells, canSelect = false }: GameGridProps) => {
       gap={2}
       p={2}
       height="100%"
+      width={"100%"}
     >
       {filledCells.map((cell, index) => {
         const isSelected = index === selectedIndex;
@@ -47,7 +53,7 @@ export const GameGrid = ({ cells, canSelect = false }: GameGridProps) => {
             transform={isSelected ? "scale(1.05)" : "scale(1)"}
             boxShadow={isSelected ? `0 0 0 2px white` : "none"}
             cursor={canSelect ? "pointer" : "default"}
-            onClick={() => handleSelect(index)}
+            onClick={() => handleSelect(cell)}
           />
         );
       })}
