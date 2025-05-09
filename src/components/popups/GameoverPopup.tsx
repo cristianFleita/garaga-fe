@@ -3,11 +3,7 @@ import { InformationPopUp } from "../InformationPopUp";
 import { MenuContainer } from "../MenuContainer";
 import { BROWN, YELLOW } from "../../theme/colors";
 import { PlayerResults } from "./PlayerResults";
-
-interface Player {
-  username: string;
-  points: number;
-}
+import { Player } from "../../state/useGameState";
 
 interface GameoverPopupProps {
   player: Player;

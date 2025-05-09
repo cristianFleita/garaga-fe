@@ -9,6 +9,11 @@ import { useCells } from "../dojo/queries/useCells";
 import { CellType, GridCell } from "../types/GameGrid";
 import { decodeString } from "../dojo/utils/decodeString";
 
+export interface Player {
+  username: string;
+  points: number;
+}
+
 export const useGameState = () => {
   const {
     setup: {
@@ -24,6 +29,7 @@ export const useGameState = () => {
   const [isPlayerTurn, setIsPlayerTurn] = useState(false);
   const [canHide, setCanHide] = useState(false);
   const [canChoose, setCanChoose] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
 
   const lsSetGameId = (gameId: number) => {
     localStorage.setItem(GAME_ID, gameId.toString());
@@ -34,8 +40,8 @@ export const useGameState = () => {
   const round = useRound();
   const cells = useCells();
 
-  console.log(round);
   console.log(cells);
+  console.log(game);
 
   useEffect(() => {
     if (game?.state == GameStateEnum.Waiting) setShowWaitForPlayer(true);
@@ -43,6 +49,11 @@ export const useGameState = () => {
       setShowWaitForPlayer(false);
 
     if (!isPlayerTurn) setShowWaitForPlayer(true);
+
+    if (game?.state == GameStateEnum.Finished) {
+      setGameOver(true);
+      setShowWaitForPlayer(false);
+    }
   }, [game?.state, isPlayerTurn]);
 
   useEffect(() => {
@@ -99,5 +110,6 @@ export const useGameState = () => {
     isPlayerTurn,
     canHide,
     canChoose,
+    gameOver,
   };
 };

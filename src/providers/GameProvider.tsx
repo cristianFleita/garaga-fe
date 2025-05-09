@@ -27,6 +27,7 @@ export interface IGameContext {
   isPlayerTurn: boolean;
   canHide: boolean;
   canChoose: boolean;
+  gameOver: boolean;
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);

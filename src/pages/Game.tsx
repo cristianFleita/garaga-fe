@@ -38,9 +38,8 @@ export const Game = () => {
     isPlayerTurn,
     canHide,
     canChoose,
+    gameOver,
   } = useGameContext();
-
-  const [gameOver, setGameOver] = useState(false);
 
   const [selectedCell, setSelectedCell] = useState<GridCell | null>(null);
 

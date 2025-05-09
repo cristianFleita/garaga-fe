@@ -25,7 +25,7 @@ export const GameSidebarMenu = ({
     shepherdMarkSuspicious,
     isWolf,
   } = useGameContext();
-  console.log(selectedCell);
+
   return (
     <Flex
       flexDirection="column"
