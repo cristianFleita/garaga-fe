@@ -11,4 +11,5 @@ export const gameProviderDefaults: IGameContext = {
   checkIsWolf: () => {},
   showWaitForPlayer: false,
   gridCells: [],
+  isWolf: false,
 };

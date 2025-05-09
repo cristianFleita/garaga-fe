@@ -22,6 +22,7 @@ export interface IGameContext {
   checkIsWolf: () => void;
   showWaitForPlayer: boolean;
   gridCells: GridCell[];
+  isWolf: boolean;
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
@@ -40,7 +41,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
   const state = useGameState();
 
-  const { gameId, setGameId, gridCells } = state;
+  const { gameId, setGameId, gridCells, isWolf } = state;
 
   const {
     createGame,
@@ -169,6 +170,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         ...state,
         ...actions,
         gridCells,
+        isWolf,
       }}
     >
       {children}

@@ -16,6 +16,11 @@ import { useRound } from "../dojo/queries/useRound";
 import { useGame } from "../dojo/queries/useGame";
 import { CellType, GridCell } from "../types/GameGrid";
 
+enum CharacterIdEnum {
+  SHEPHERD = 1,
+  WOLF = 2,
+}
+
 export const Game = () => {
   const {
     setup: { masterAccount },
@@ -25,9 +30,11 @@ export const Game = () => {
   const username = useUsername();
   const round = useRound();
   const game = useGame();
-  const { checkOrCreateGame, showWaitForPlayer, gridCells } = useGameContext();
+  const { checkOrCreateGame, showWaitForPlayer, gridCells, isWolf } =
+    useGameContext();
 
   const [gameOver, setGameOver] = useState(false);
+  console.log(isWolf);
 
   useEffect(() => {
     if (account !== masterAccount && username) {
@@ -66,7 +73,9 @@ export const Game = () => {
             justifyContent={"space-evenly"}
           >
             <GameSidebarMenu
-              characterId={gameMock.characterId}
+              characterId={
+                isWolf ? CharacterIdEnum.WOLF : CharacterIdEnum.SHEPHERD
+              }
               showHideButton={gameMock.showHideBtn}
               showChooseButton={gameMock.showChooseBtn}
             />

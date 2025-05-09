@@ -7,6 +7,7 @@ import { useRound } from "../dojo/queries/useRound";
 import { GameStateEnum } from "../dojo/typescript/custom";
 import { useCells } from "../dojo/queries/useCells";
 import { CellType, GridCell } from "../types/GameGrid";
+import { decodeString } from "../dojo/utils/decodeString";
 
 export const useGameState = () => {
   const {
@@ -19,6 +20,7 @@ export const useGameState = () => {
   const [gameId, setGameId] = useState<number>(getLSGameId());
   const [gridCells, setGridCells] = useState<GridCell[]>([]);
   const [showWaitForPlayer, setShowWaitForPlayer] = useState(false);
+  const [isWolf, setIsWolf] = useState(false);
 
   const lsSetGameId = (gameId: number) => {
     localStorage.setItem(GAME_ID, gameId.toString());
@@ -36,13 +38,18 @@ export const useGameState = () => {
   }, [game?.state]);
 
   useEffect(() => {
+    setIsWolf(
+      decodeString(account.address) == decodeString(game?.wolf.toString() ?? "")
+    );
+  }, [game?.wolf]);
+
+  useEffect(() => {
     if (gridCells.length === 0) {
       setGridCells(
         cells.map((cell) => ({
           type: cell.is_alive ? CellType.SHEEP : CellType.SHEEP_DEAD,
         }))
       );
-      // console.log(gridCells);
     }
   }, [cells.length, cells]);
 
@@ -51,5 +58,6 @@ export const useGameState = () => {
     setGameId: lsSetGameId,
     showWaitForPlayer,
     gridCells,
+    isWolf,
   };
 };
