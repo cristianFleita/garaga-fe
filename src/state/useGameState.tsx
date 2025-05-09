@@ -6,6 +6,7 @@ import { useGame } from "../dojo/queries/useGame";
 import { useRound } from "../dojo/queries/useRound";
 import { GameStateEnum } from "../dojo/typescript/custom";
 import { useCells } from "../dojo/queries/useCells";
+import { CellType, GridCell } from "../types/GameGrid";
 
 export const useGameState = () => {
   const {
@@ -16,6 +17,7 @@ export const useGameState = () => {
   } = useDojo();
 
   const [gameId, setGameId] = useState<number>(getLSGameId());
+  const [gridCells, setGridCells] = useState<GridCell[]>([]);
   const [showWaitForPlayer, setShowWaitForPlayer] = useState(false);
 
   const lsSetGameId = (gameId: number) => {
@@ -27,19 +29,27 @@ export const useGameState = () => {
   const round = useRound();
   const cells = useCells();
 
-  console.log(game);
-  console.log(round);
-
   useEffect(() => {
     if (game?.state == GameStateEnum.Waiting) setShowWaitForPlayer(true);
     else if (game?.state == GameStateEnum.InProgress)
       setShowWaitForPlayer(false);
   }, [game?.state]);
 
+  useEffect(() => {
+    if (gridCells.length === 0) {
+      setGridCells(
+        cells.map((cell) => ({
+          type: cell.is_alive ? CellType.SHEEP : CellType.SHEEP_DEAD,
+        }))
+      );
+      // console.log(gridCells);
+    }
+  }, [cells.length, cells]);
+
   return {
     gameId,
     setGameId: lsSetGameId,
     showWaitForPlayer,
-    cells,
+    gridCells,
   };
 };

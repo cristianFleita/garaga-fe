@@ -9,6 +9,7 @@ import { gameExists } from "../dojo/utils/getGame";
 import { useDojo } from "../dojo/DojoContext";
 import { useNavigate } from "react-router-dom";
 import { Cell } from "../types/Cell";
+import { GridCell } from "../types/GameGrid";
 
 export interface IGameContext {
   gameId: number;
@@ -20,7 +21,7 @@ export interface IGameContext {
   shepherdMarkSuspicious: (sheepIdx: number) => void;
   checkIsWolf: () => void;
   showWaitForPlayer: boolean;
-  cells: Cell[];
+  gridCells: GridCell[];
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
@@ -39,7 +40,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
   const state = useGameState();
 
-  const { gameId, setGameId } = state;
+  const { gameId, setGameId, gridCells } = state;
 
   const {
     createGame,
@@ -167,6 +168,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       value={{
         ...state,
         ...actions,
+        gridCells,
       }}
     >
       {children}

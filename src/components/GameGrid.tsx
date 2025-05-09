@@ -27,6 +27,7 @@ export const GameGrid = ({ cells, canSelect = false }: GameGridProps) => {
       gap={2}
       p={2}
       height="100%"
+      width={"100%"}
     >
       {filledCells.map((cell, index) => {
         const isSelected = index === selectedIndex;

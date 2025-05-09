@@ -14,6 +14,7 @@ import { useUsername } from "../dojo/utils/useUsername";
 import { useGameContext } from "../providers/GameProvider";
 import { useRound } from "../dojo/queries/useRound";
 import { useGame } from "../dojo/queries/useGame";
+import { CellType, GridCell } from "../types/GameGrid";
 
 export const Game = () => {
   const {
@@ -24,7 +25,7 @@ export const Game = () => {
   const username = useUsername();
   const round = useRound();
   const game = useGame();
-  const { checkOrCreateGame, showWaitForPlayer } = useGameContext();
+  const { checkOrCreateGame, showWaitForPlayer, gridCells } = useGameContext();
 
   const [gameOver, setGameOver] = useState(false);
 
@@ -69,10 +70,10 @@ export const Game = () => {
               showHideButton={gameMock.showHideBtn}
               showChooseButton={gameMock.showChooseBtn}
             />
-            <Flex flexDirection={"column"} height={"100%"}>
+            <Flex flexDirection={"column"} height={"100%"} width={"40%"}>
               <MenuContainer full>
                 <GameGrid
-                  cells={gameMock.grid}
+                  cells={gridCells}
                   canSelect={gameMock.canSelectGrid}
                 />
               </MenuContainer>
