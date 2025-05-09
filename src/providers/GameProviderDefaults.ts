@@ -19,4 +19,5 @@ export const gameProviderDefaults: IGameContext = {
   player: { username: "", points: 0 },
   oponent: { username: "", points: 0 },
   winner: false,
+  resetGame: () => {},
 };

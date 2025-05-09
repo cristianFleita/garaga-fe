@@ -31,6 +31,7 @@ export interface IGameContext {
   player: Player;
   oponent: Player;
   winner: boolean;
+  resetGame: () => void;
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
@@ -62,6 +63,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     player,
     oponent,
     winner,
+    resetState,
   } = state;
 
   const {
@@ -184,6 +186,13 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const resetGame = () => {
+    localStorage.removeItem(GAME_ID);
+    localStorage.removeItem(WOLF_INDEX);
+    localStorage.removeItem(WOLF_SALT);
+    resetState();
+  };
+
   const actions = {
     executeCreateGame,
     joinGame: executeJoinGame,
@@ -192,6 +201,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     wolfKillSheep: executeKillSheep,
     shepherdMarkSuspicious: executeMarkSheep,
     checkIsWolf: executeCheckIsWolf,
+    resetGame,
   };
 
   return (

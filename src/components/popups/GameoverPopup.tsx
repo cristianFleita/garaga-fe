@@ -4,6 +4,8 @@ import { MenuContainer } from "../MenuContainer";
 import { BROWN, YELLOW } from "../../theme/colors";
 import { PlayerResults } from "./PlayerResults";
 import { Player } from "../../state/useGameState";
+import { useNavigate } from "react-router-dom";
+import { useGameContext } from "../../providers/GameProvider";
 
 interface GameoverPopupProps {
   player: Player;
@@ -16,6 +18,9 @@ export const GameoverPopup: React.FC<GameoverPopupProps> = ({
   oponent,
   winner,
 }) => {
+  const navigate = useNavigate();
+  const { resetGame } = useGameContext();
+
   return (
     <InformationPopUp
       onClose={() => {}}
@@ -56,7 +61,15 @@ export const GameoverPopup: React.FC<GameoverPopupProps> = ({
               />
             </Flex>
 
-            <Button variant="secondarySolid">Go to Main Menu</Button>
+            <Button
+              variant="secondarySolid"
+              onClick={() => {
+                resetGame();
+                navigate("/");
+              }}
+            >
+              Go to Main Menu
+            </Button>
           </MenuContainer>
         </Flex>
       }

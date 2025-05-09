@@ -44,8 +44,9 @@ export const useGameState = () => {
   const round = useRound();
   const cells = useCells();
 
-  console.log(cells);
+  console.log(round);
   console.log(game);
+  console.log(cells);
 
   useEffect(() => {
     if (game?.state == GameStateEnum.Waiting) setShowWaitForPlayer(true);
@@ -124,6 +125,18 @@ export const useGameState = () => {
     });
   }, [game?.player_1_score, game?.player_2_score]);
 
+  const resetState = () => {
+    setShowWaitForPlayer(false);
+    setIsWolf(false);
+    setIsPlayerTurn(false);
+    setCanHide(false);
+    setCanChoose(false);
+    setWinner(false);
+    setGameOver(false);
+    setPlayer({ username: "", points: 0 });
+    setOponent({ username: "", points: 0 });
+  };
+
   return {
     gameId,
     setGameId: lsSetGameId,
@@ -137,5 +150,6 @@ export const useGameState = () => {
     player,
     oponent,
     winner,
+    resetState,
   };
 };
