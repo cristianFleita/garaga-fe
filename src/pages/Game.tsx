@@ -5,14 +5,30 @@ import { GameGrid } from "../components/GameGrid";
 import { GameHeader } from "../components/GameHeader";
 import { gameMockWolf as gameMock } from "../mocks/gameMock";
 import { playerLose as gameOverMock } from "../mocks/gameOverMock";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { WaitForPlayerPopup } from "../components/popups/WaitForPlayerPopup";
 import { GameBackground } from "../components/GameBackground";
 import { GameoverPopup } from "../components/popups/GameoverPopup";
+import { useDojo } from "../dojo/DojoContext";
+import { useUsername } from "../dojo/utils/useUsername";
+import { useGameContext } from "../providers/GameProvider";
 
 export const Game = () => {
-  const [showWaitForPlayer, setShowWaitForPlayer] = useState(false);
-  const [gameOver, setGameOver] = useState(true);
+  const {
+    setup: { masterAccount },
+    account: { account },
+  } = useDojo();
+
+  const username = useUsername();
+  const { checkOrCreateGame, showWaitForPlayer } = useGameContext();
+
+  const [gameOver, setGameOver] = useState(false);
+
+  useEffect(() => {
+    if (account !== masterAccount && username) {
+      checkOrCreateGame();
+    }
+  }, [account, username]);
 
   return (
     <GameBackground>

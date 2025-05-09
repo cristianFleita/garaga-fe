@@ -53,7 +53,7 @@ export const Lobby = () => {
         Create Game
       </Button>
 
-      <Button
+      {/* <Button
         variant={"secondarySolid"}
         onClick={() => {
           submitWolfCommitment(1);
@@ -87,7 +87,7 @@ export const Lobby = () => {
         }}
       >
         check is wolf
-      </Button>
+      </Button> */}
     </MenuContainer>
   );
 };
