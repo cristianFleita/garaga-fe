@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDojo } from "../dojo/DojoContext";
 import { getLSGameId } from "../dojo/utils/getLSGameId";
-import { GAME_ID } from "../constants/localStorage";
+import { GAME_ID, WOLF_INDEX } from "../constants/localStorage";
 import { useGame } from "../dojo/queries/useGame";
 import { useRound } from "../dojo/queries/useRound";
 import { GameStateEnum, RoundStateEnum } from "../dojo/typescript/custom";
@@ -35,6 +35,7 @@ export const useGameState = () => {
   const cells = useCells();
 
   console.log(round);
+  console.log(cells);
 
   useEffect(() => {
     if (game?.state == GameStateEnum.Waiting) setShowWaitForPlayer(true);
@@ -73,9 +74,15 @@ export const useGameState = () => {
 
   useEffect(() => {
     if (gridCells.length === 0) {
+      const lsWolfValue = Number(localStorage.getItem(WOLF_INDEX)) ?? 0;
       setGridCells(
         cells.map((cell) => ({
-          type: cell.is_alive ? CellType.SHEEP : CellType.SHEEP_DEAD,
+          type:
+            isWolf && cell.value == lsWolfValue
+              ? CellType.SHEEP_FAKE
+              : cell.is_alive
+                ? CellType.SHEEP
+                : CellType.SHEEP_DEAD,
           value: cell.value,
         }))
       );
