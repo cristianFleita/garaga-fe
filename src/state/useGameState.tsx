@@ -5,6 +5,7 @@ import { GAME_ID } from "../constants/localStorage";
 import { useGame } from "../dojo/queries/useGame";
 import { useRound } from "../dojo/queries/useRound";
 import { GameStateEnum } from "../dojo/typescript/custom";
+import { useCells } from "../dojo/queries/useCells";
 
 export const useGameState = () => {
   const {
@@ -24,6 +25,7 @@ export const useGameState = () => {
 
   const game = useGame();
   const round = useRound();
+  const cells = useCells();
 
   console.log(game);
   console.log(round);
@@ -38,5 +40,6 @@ export const useGameState = () => {
     gameId,
     setGameId: lsSetGameId,
     showWaitForPlayer,
+    cells,
   };
 };

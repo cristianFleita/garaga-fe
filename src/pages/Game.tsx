@@ -12,6 +12,8 @@ import { GameoverPopup } from "../components/popups/GameoverPopup";
 import { useDojo } from "../dojo/DojoContext";
 import { useUsername } from "../dojo/utils/useUsername";
 import { useGameContext } from "../providers/GameProvider";
+import { useRound } from "../dojo/queries/useRound";
+import { useGame } from "../dojo/queries/useGame";
 
 export const Game = () => {
   const {
@@ -20,6 +22,8 @@ export const Game = () => {
   } = useDojo();
 
   const username = useUsername();
+  const round = useRound();
+  const game = useGame();
   const { checkOrCreateGame, showWaitForPlayer } = useGameContext();
 
   const [gameOver, setGameOver] = useState(false);
@@ -41,7 +45,11 @@ export const Game = () => {
             winner={gameOverMock.winner}
           />
         )}
-        <GameHeader username={gameMock.username} round={gameMock.round} />
+        <GameHeader
+          username={username ?? ""}
+          gameId={Number(round?.game_id)}
+          round={Number(game?.round_count)}
+        />
         <Flex
           flexDirection={"column"}
           gap={4}

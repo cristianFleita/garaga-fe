@@ -8,6 +8,7 @@ import { poseidonHashBN254 } from "garaga";
 import { gameExists } from "../dojo/utils/getGame";
 import { useDojo } from "../dojo/DojoContext";
 import { useNavigate } from "react-router-dom";
+import { Cell } from "../types/Cell";
 
 export interface IGameContext {
   gameId: number;
@@ -19,6 +20,7 @@ export interface IGameContext {
   shepherdMarkSuspicious: (sheepIdx: number) => void;
   checkIsWolf: () => void;
   showWaitForPlayer: boolean;
+  cells: Cell[];
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
