@@ -16,4 +16,7 @@ export const gameProviderDefaults: IGameContext = {
   canHide: false,
   canChoose: false,
   gameOver: false,
+  player: { username: "", points: 0 },
+  oponent: { username: "", points: 0 },
+  winner: false,
 };

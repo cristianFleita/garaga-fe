@@ -3,8 +3,6 @@ import { MenuContainer } from "../components/MenuContainer";
 import { GameSidebarMenu } from "../components/GameSidebarMenu";
 import { GameGrid } from "../components/GameGrid";
 import { GameHeader } from "../components/GameHeader";
-import { gameMockWolf as gameMock } from "../mocks/gameMock";
-import { playerLose as gameOverMock } from "../mocks/gameOverMock";
 import { useEffect, useState } from "react";
 import { WaitForPlayerPopup } from "../components/popups/WaitForPlayerPopup";
 import { GameBackground } from "../components/GameBackground";
@@ -39,6 +37,9 @@ export const Game = () => {
     canHide,
     canChoose,
     gameOver,
+    player,
+    oponent,
+    winner,
   } = useGameContext();
 
   const [selectedCell, setSelectedCell] = useState<GridCell | null>(null);
@@ -54,11 +55,7 @@ export const Game = () => {
       <>
         {showWaitForPlayer && <WaitForPlayerPopup />}
         {gameOver && (
-          <GameoverPopup
-            player={gameOverMock.player}
-            oponent={gameOverMock.oponent}
-            winner={gameOverMock.winner}
-          />
+          <GameoverPopup player={player} oponent={oponent} winner={winner} />
         )}
         <GameHeader
           username={username ?? ""}

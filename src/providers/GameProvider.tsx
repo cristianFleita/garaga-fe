@@ -1,6 +1,6 @@
 import { PropsWithChildren, createContext, useContext, useEffect } from "react";
 import { gameProviderDefaults } from "./GameProviderDefaults";
-import { useGameState } from "../state/useGameState";
+import { Player, useGameState } from "../state/useGameState";
 import { useGameActions } from "../dojo/useGameActions";
 import { GAME_ID, WOLF_INDEX, WOLF_SALT } from "../constants/localStorage";
 import { poseidonHashBN254 } from "garaga";
@@ -28,6 +28,9 @@ export interface IGameContext {
   canHide: boolean;
   canChoose: boolean;
   gameOver: boolean;
+  player: Player;
+  oponent: Player;
+  winner: boolean;
 }
 
 const GameContext = createContext<IGameContext>(gameProviderDefaults);
@@ -47,7 +50,19 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const state = useGameState();
   const round = useRound();
 
-  const { gameId, setGameId, gridCells, isWolf, isPlayerTurn } = state;
+  const {
+    gameId,
+    setGameId,
+    gridCells,
+    isWolf,
+    isPlayerTurn,
+    canHide,
+    canChoose,
+    gameOver,
+    player,
+    oponent,
+    winner,
+  } = state;
 
   const {
     createGame,

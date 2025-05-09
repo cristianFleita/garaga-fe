@@ -8,6 +8,7 @@ import { GameStateEnum, RoundStateEnum } from "../dojo/typescript/custom";
 import { useCells } from "../dojo/queries/useCells";
 import { CellType, GridCell } from "../types/GameGrid";
 import { decodeString } from "../dojo/utils/decodeString";
+import { num } from "starknet";
 
 export interface Player {
   username: string;
@@ -30,6 +31,9 @@ export const useGameState = () => {
   const [canHide, setCanHide] = useState(false);
   const [canChoose, setCanChoose] = useState(false);
   const [gameOver, setGameOver] = useState(false);
+  const [player, setPlayer] = useState<Player>({ username: "", points: 0 });
+  const [oponent, setOponent] = useState<Player>({ username: "", points: 0 });
+  const [winner, setWinner] = useState(false);
 
   const lsSetGameId = (gameId: number) => {
     localStorage.setItem(GAME_ID, gameId.toString());
@@ -51,6 +55,8 @@ export const useGameState = () => {
     if (!isPlayerTurn) setShowWaitForPlayer(true);
 
     if (game?.state == GameStateEnum.Finished) {
+      const winner = num.toHexString(game?.winner.toString() ?? 0);
+      setWinner(winner === account.address);
       setGameOver(true);
       setShowWaitForPlayer(false);
     }
@@ -101,6 +107,23 @@ export const useGameState = () => {
     }
   }, [cells.length, cells]);
 
+  useEffect(() => {
+    const player1 = num.toHexString(game?.player_1.toString() ?? 0);
+    const player2 = num.toHexString(game?.player_2.toString() ?? 0);
+
+    const isPlayer1 = player1 === account.address;
+
+    setPlayer({
+      username: isPlayer1 ? player1 : player2,
+      points: isPlayer1 ? game?.player_1_score ?? 0 : game?.player_2_score ?? 0,
+    });
+
+    setOponent({
+      username: isPlayer1 ? player2 : player1,
+      points: isPlayer1 ? game?.player_2_score ?? 0 : game?.player_1_score ?? 0,
+    });
+  }, [game?.player_1_score, game?.player_2_score]);
+
   return {
     gameId,
     setGameId: lsSetGameId,
@@ -111,5 +134,8 @@ export const useGameState = () => {
     canHide,
     canChoose,
     gameOver,
+    player,
+    oponent,
+    winner,
   };
 };
