@@ -182,45 +182,46 @@ export const useGameActions = () => {
 
   const wolfKillSheep = async (
     gameId: number,
-    sheepToKillIndex: number,
-    commitment: number,
+    wolfValue: number,
+    wolfSalt: number,
     wolfIndex: number,
-    sheep_positions: any,
-    sheep_alive: boolean[]
+    sheepPositions: number[],
+    sheepAlive: boolean[],
+    sheepToKillIndex: number
   ) => {
     await init();
     try {
       showTransactionToast();
 
-      const wolfValue = 4;
-      const wolfIndex = 3;
-      const wolfSalt = 0;
-      const sheepPositions = [
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
-      ];
-      const sheepAlive = [
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-      ];
+      // const wolfValue = 4;
+      // const wolfIndex = 3;
+      // const wolfSalt = 0;
+      // const sheepPositions = [
+      //   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+      // ];
+      // const sheepAlive = [
+      //   true,
+      //   true,
+      //   true,
+      //   true,
+      //   true,
+      //   true,
+      //   true,
+      //   true,
+      //   true,
+      //   true,
+      //   true,
+      //   true,
+      //   true,
+      //   true,
+      //   true,
+      //   true,
+      // ];
       const wolfCommitment = poseidonHashBN254(
         BigInt(wolfValue),
         BigInt(wolfSalt)
       ).toString();
-      const sheepToKillIndex = 2;
+      // const sheepToKillIndex = 2;
 
       const inputs = {
         wolf_value: wolfValue,

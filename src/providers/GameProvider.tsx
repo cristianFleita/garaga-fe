@@ -165,16 +165,17 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       );
       const wolf_index = getCellByValue(Number(wolfValue));
 
-      const cellDataPos = cells.map((cell) => cell.value);
-      const cellDataBool = cells.map((cell) => cell.is_alive);
+      const sheepPositions = cells.map((cell) => cell.value);
+      const sheepAlive = cells.map((cell) => cell.is_alive);
 
       await wolfKillSheep(
         gameId,
-        Number(sheepToKillIndex),
-        Number(wolfCommitment),
+        Number(wolfValue),
+        Number(localStorage.getItem(WOLF_SALT) ?? 0),
         wolf_index?.idx ?? 0,
-        cellDataPos,
-        cellDataBool
+        sheepPositions,
+        sheepAlive,
+        sheepToKillIndex
       ).then(() => {
         console.log("Sheep killed successfully");
       });
