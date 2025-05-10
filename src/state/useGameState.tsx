@@ -137,6 +137,10 @@ export const useGameState = () => {
     setOponent({ username: "", points: 0 });
   };
 
+  const getCellByValue = (value: number) => {
+    return cells.find((cell) => cell.value === value);
+  };
+
   return {
     gameId,
     setGameId: lsSetGameId,
@@ -151,5 +155,7 @@ export const useGameState = () => {
     oponent,
     winner,
     resetState,
+    getCellByValue,
+    cells,
   };
 };
