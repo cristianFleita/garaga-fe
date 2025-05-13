@@ -7,8 +7,8 @@ import {
 } from "../assets/is_wolf/circuit.json";
 import wolfVkUrl from "../assets/is_wolf/vk.bin?url";
 import {
-  bytecode, //as killSheepByteCode,
-  abi, // as killSheepAbi,
+  bytecode as killSheepByteCode,
+  abi as killSheepAbi,
 } from "../assets/kill_sheep/circuit.json";
 import killSheepVkUrl from "../assets/kill_sheep/vk.bin?url";
 
@@ -188,32 +188,6 @@ export const useGameActions = () => {
     try {
       showTransactionToast();
 
-      const wolfValue = 4;
-      const wolfIndex = 3;
-      const sheepPositions = [
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
-      ];
-      const sheepAlive = [
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-      ];
-
-      const sheepToKillIndex = 2;
-
       const inputs = {
         wolf_value: wolfValue,
         wolf_index: wolfIndex,
@@ -226,11 +200,11 @@ export const useGameActions = () => {
       console.log(inputs);
       console.log("wolfKillSheep - wolfCommitment: ", wolfCommitment);
 
-      let noir = new Noir({ bytecode, abi: abi as any });
+      let noir = new Noir({ bytecode: killSheepByteCode, abi: killSheepAbi as any });
       let execResult = await noir.execute(inputs);
       console.log(execResult);
 
-      let honk = new UltraHonkBackend(bytecode, { threads: 2 });
+      let honk = new UltraHonkBackend(killSheepByteCode, { threads: 2 });
       let proof = await honk.generateProof(execResult.witness, {
         keccak: true,
       });
@@ -310,19 +284,52 @@ export const useGameActions = () => {
     }
   };
 
-  const checkIsWolf = async (gameId: number) => {
+  const checkIsWolf = async (
+    gameId: number,
+    wolfValue: number,
+    wolfSalt: string,
+    wolfIndex: number,
+    sheepPositions: number[],
+    sheepAlive: boolean[],
+    suspiciousSheepIndex: number,
+    wolfCommitment: string
+  ) => {
+    console.log("checkIsWolf");
     try {
       showTransactionToast();
-      // si el value del lobo es igual a la oveja que sospecha el pastor pasas el valor 1 caso contrario 0
-      // is_wolf_result
-      const inputs = {};
 
-      const callData = await getProof(
-        inputs,
-        "wolfByteCode",
-        "wolfAbi",
-        wolfVk as Uint8Array
+      const inputs = {
+        wolf_value: wolfValue,
+        wolf_index: wolfIndex,
+        wolf_salt: wolfSalt,
+        sheep_positions: sheepPositions,
+        sheep_alive: sheepAlive,
+        wolf_commitment: wolfCommitment,
+        sheep_to_check_index: suspiciousSheepIndex,
+      };
+      console.log(inputs);
+      console.log("checkIsWolf - wolfCommitment: ", wolfCommitment);
+
+      let noir = new Noir({ bytecode: wolfByteCode, abi: wolfAbi as any });
+      let execResult = await noir.execute(inputs);
+      console.log(execResult);
+
+      let honk = new UltraHonkBackend(wolfByteCode, { threads: 2 });
+      let proof = await honk.generateProof(execResult.witness, {
+        keccak: true,
+      });
+      honk.destroy();
+      console.log(proof);
+
+      const rawProof = reconstructHonkProof(flattenFieldsAsArray(proof.publicInputs), proof.proof);
+      const honkProof = parseHonkProofFromBytes(rawProof);
+      const honkVk = parseHonkVerifyingKeyFromBytes(wolfVk as Uint8Array);
+      const callData = getHonkCallData(
+        honkProof,
+        honkVk,
+        0 // HonkFlavor.KECCAK
       );
+      console.log(callData);
 
       const response = await client.game_system.checkIsWolf(
         account,
@@ -352,32 +359,6 @@ export const useGameActions = () => {
     }
   };
 
-  const getProof = async (
-    inputs: any,
-    bytecode: string,
-    abi: any,
-    vk: Uint8Array
-  ) => {
-    let noir = new Noir({ bytecode, abi: abi as any });
-    let execResult = await noir.execute(inputs);
-
-    let honk = new UltraHonkBackend(bytecode, { threads: 2 });
-    let proof = await honk.generateProof(execResult.witness, { keccak: true });
-    honk.destroy();
-    console.log(proof);
-
-    console.log("CALL DATA BEFORE");
-    const callData = getHonkCallData(
-      proof.proof,
-      flattenFieldsAsArray(proof.publicInputs),
-      vk as Uint8Array,
-      0 // HonkFlavor.KECCAK
-    );
-    console.log(callData);
-    console.log("END");
-
-    return callData;
-  };
   return {
     createGame,
     joinGame,

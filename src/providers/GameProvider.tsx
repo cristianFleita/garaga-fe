@@ -83,8 +83,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (
-      round?.state.toString() == RoundStateEnum.WaitingForWolfResult &&
-      isWolf
+      round?.state.toString() == RoundStateEnum.WaitingForWolfResult 
+      // TODO: && isWolf
     ) {
       executeCheckIsWolf();
     }
@@ -200,8 +200,28 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const executeCheckIsWolf = async () => {
+    console.log("executeCheckIsWolf");
     try {
-      await checkIsWolf(gameId).then(() => {
+      const wolfValue = BigInt(localStorage.getItem(WOLF_INDEX) ?? 0);
+      const wolfCommitment = poseidonHashBN254(
+        BigInt(wolfValue),
+        BigInt(localStorage.getItem(WOLF_SALT) ?? 0)
+      ).toString();
+      const wolf_index = getCellByValue(Number(wolfValue));
+
+      const sheepPositions = cells.map((cell) => cell.value);
+      const sheepAlive = cells.map((cell) => cell.is_alive);
+
+      await checkIsWolf(
+        gameId,
+        Number(wolfValue),
+        localStorage.getItem(WOLF_SALT) ?? "0",
+        wolf_index?.idx ?? 0,
+        sheepPositions,
+        sheepAlive,
+        round?.suspicious_sheep_index ?? 0,
+        wolfCommitment
+      ).then(() => {
         console.log("Wolf checked successfully");
       });
     } catch (e) {
