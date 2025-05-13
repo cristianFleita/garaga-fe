@@ -1,11 +1,11 @@
 import { CairoOption, CairoOptionVariant, shortString } from "starknet";
 import { Noir } from "@noir-lang/noir_js";
 import { UltraHonkBackend, reconstructHonkProof } from "@aztec/bb.js";
-// import {
-//   bytecode as wolfByteCode,
-//   abi as wolfAbi,
-// } from "../assets/is_wolf/circuit.json";
-// import wolfVkUrl from "../assets/is_wolf/vk.bin?url";
+import {
+  bytecode as wolfByteCode,
+  abi as wolfAbi,
+} from "../assets/is_wolf/circuit.json";
+import wolfVkUrl from "../assets/is_wolf/vk.bin?url";
 import {
   bytecode, //as killSheepByteCode,
   abi, // as killSheepAbi,
@@ -21,7 +21,8 @@ import {
 import { getEventKey } from "../utils/getEventKey";
 import { DojoEvents } from "../enums/dojoEvents";
 import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent";
-import { getHonkCallData, init, poseidonHashBN254 } from "garaga";
+import { getHonkCallData, parseHonkProofFromBytes, parseHonkVerifyingKeyFromBytes, init, poseidonHashBN254 } from 'garaga';
+import { RpcProvider, Contract, WalletAccount, cairo, CallData, stark } from 'starknet';
 import { flattenFieldsAsArray } from "./utils/proof";
 import initNoirC from "@noir-lang/noirc_abi";
 import initACVM from "@noir-lang/acvm_js";
@@ -59,26 +60,19 @@ export const useGameActions = () => {
       }
     };
 
-    const loadVk = async () => {
-      const response = await fetch(killSheepVkUrl);
+
+
+    const loadVk = async (vkUrl: any, setVk: (res: Uint8Array) => void) => {
+      const response = await fetch(vkUrl);
       const arrayBuffer = await response.arrayBuffer();
       const binaryData = new Uint8Array(arrayBuffer);
-      setKillSheepVk(binaryData);
+      setVk(binaryData);
       console.log("Loaded verifying key:", binaryData);
     };
 
-    // const loadVk = async (vkUrl: any, setVk: (res: Uint8Array) => void) => {
-    //   const response = await fetch(vkUrl);
-    //   const arrayBuffer = await response.arrayBuffer();
-    //   const binaryData = new Uint8Array(arrayBuffer);
-    //   setVk(binaryData);
-    //   console.log("Loaded verifying key:", binaryData);
-    // };
-
     initWasm();
-    loadVk();
-    // loadVk(wolfVkUrl, setWolfVk);
-    // loadVk(killSheepVkUrl, setKillSheepVk);
+    loadVk(wolfVkUrl, setWolfVk);
+    loadVk(killSheepVkUrl, setKillSheepVk);
   }, []);
 
   const createGame = async () => {
@@ -148,14 +142,14 @@ export const useGameActions = () => {
       return {};
     }
   };
-
-  const submitWolfCommitment = async (gameId: number, commitment: number) => {
+ 
+  const submitWolfCommitment = async (gameId: number, commitment: string) => {
     try {
       showTransactionToast();
       const response = await client.game_system.submitWolfCommitment(
         account,
         gameId,
-        commitment
+        cairo.uint256(BigInt(commitment))
       );
       const transaction_hash = response?.transaction_hash ?? "";
       showTransactionToast(transaction_hash, "Submitting wolf commitment ...");
@@ -183,45 +177,42 @@ export const useGameActions = () => {
   const wolfKillSheep = async (
     gameId: number,
     wolfValue: number,
-    wolfSalt: number,
+    wolfSalt: string,
     wolfIndex: number,
     sheepPositions: number[],
     sheepAlive: boolean[],
-    sheepToKillIndex: number
+    sheepToKillIndex: number,
+    wolfCommitment: string
   ) => {
     await init();
     try {
       showTransactionToast();
 
-      // const wolfValue = 4;
-      // const wolfIndex = 3;
-      // const wolfSalt = 0;
-      // const sheepPositions = [
-      //   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
-      // ];
-      // const sheepAlive = [
-      //   true,
-      //   true,
-      //   true,
-      //   true,
-      //   true,
-      //   true,
-      //   true,
-      //   true,
-      //   true,
-      //   true,
-      //   true,
-      //   true,
-      //   true,
-      //   true,
-      //   true,
-      //   true,
-      // ];
-      const wolfCommitment = poseidonHashBN254(
-        BigInt(wolfValue),
-        BigInt(wolfSalt)
-      ).toString();
-      // const sheepToKillIndex = 2;
+      const wolfValue = 4;
+      const wolfIndex = 3;
+      const sheepPositions = [
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+      ];
+      const sheepAlive = [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+      ];
+
+      const sheepToKillIndex = 2;
 
       const inputs = {
         wolf_value: wolfValue,
@@ -233,6 +224,7 @@ export const useGameActions = () => {
         sheep_to_kill_index: sheepToKillIndex,
       };
       console.log(inputs);
+      console.log("wolfKillSheep - wolfCommitment: ", wolfCommitment);
 
       let noir = new Noir({ bytecode, abi: abi as any });
       let execResult = await noir.execute(inputs);
@@ -245,19 +237,15 @@ export const useGameActions = () => {
       honk.destroy();
       console.log(proof);
 
+      const rawProof = reconstructHonkProof(flattenFieldsAsArray(proof.publicInputs), proof.proof);
+      const honkProof = parseHonkProofFromBytes(rawProof);
+      const honkVk = parseHonkVerifyingKeyFromBytes(killSheepvk as Uint8Array);
       const callData = getHonkCallData(
-        proof.proof,
-        flattenFieldsAsArray(proof.publicInputs),
-        killSheepvk as Uint8Array,
+        honkProof,
+        honkVk,
         0 // HonkFlavor.KECCAK
       );
       console.log(callData);
-      // const proof = await getProof(
-      //   inputs,
-      //   killSheepByteCode,
-      //   killSheepAbi,
-      //   killSheepvk as Uint8Array
-      // );
 
       const response = await client.game_system.wolfKillSheep(
         account,

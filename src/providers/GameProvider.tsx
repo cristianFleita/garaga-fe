@@ -141,14 +141,16 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     try {
       const wolfSalt = generateRandomSalt();
       const wolfCommitment = poseidonHashBN254(
-        BigInt(wolfSalt),
-        BigInt(selectedSheepValue)
-      );
+        BigInt(selectedSheepValue),
+        BigInt(wolfSalt)
+      ).toString();
 
       localStorage.setItem(WOLF_INDEX, selectedSheepValue.toString());
       localStorage.setItem(WOLF_SALT, wolfSalt.toString());
 
-      submitWolfCommitment(gameId, Number(wolfCommitment)).then(() => {
+      console.log("SubmitWolfCommitment - wolfCommitment: ", wolfCommitment);
+
+      submitWolfCommitment(gameId, wolfCommitment).then(() => {
         console.log("submited successfully");
       });
     } catch (e) {
@@ -160,9 +162,9 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     try {
       const wolfValue = BigInt(localStorage.getItem(WOLF_INDEX) ?? 0);
       const wolfCommitment = poseidonHashBN254(
-        BigInt(localStorage.getItem(WOLF_SALT) ?? 0),
-        wolfValue
-      );
+        BigInt(wolfValue),
+        BigInt(localStorage.getItem(WOLF_SALT) ?? 0)
+      ).toString();
       const wolf_index = getCellByValue(Number(wolfValue));
 
       const sheepPositions = cells.map((cell) => cell.value);
@@ -171,11 +173,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       await wolfKillSheep(
         gameId,
         Number(wolfValue),
-        Number(localStorage.getItem(WOLF_SALT) ?? 0),
+        localStorage.getItem(WOLF_SALT) ?? "0",
         wolf_index?.idx ?? 0,
         sheepPositions,
         sheepAlive,
-        sheepToKillIndex
+        sheepToKillIndex,
+        wolfCommitment
       ).then(() => {
         console.log("Sheep killed successfully");
       });
