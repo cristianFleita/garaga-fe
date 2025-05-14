@@ -35,6 +35,7 @@ export const GameGrid = ({
       width="100%"
       overflow="hidden"
       maxHeight="100%"
+      aspectRatio="1"
     >
       {filledCells.map((cell, index) => {
         const isSelected = index === selectedIndex;
