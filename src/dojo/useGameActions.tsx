@@ -21,8 +21,21 @@ import {
 import { getEventKey } from "../utils/getEventKey";
 import { DojoEvents } from "../enums/dojoEvents";
 import { getNumberValueFromEvents } from "../utils/getNumberValueFromEvent";
-import { getHonkCallData, parseHonkProofFromBytes, parseHonkVerifyingKeyFromBytes, init, poseidonHashBN254 } from 'garaga';
-import { RpcProvider, Contract, WalletAccount, cairo, CallData, stark } from 'starknet';
+import {
+  getHonkCallData,
+  parseHonkProofFromBytes,
+  parseHonkVerifyingKeyFromBytes,
+  init,
+  poseidonHashBN254,
+} from "garaga";
+import {
+  RpcProvider,
+  Contract,
+  WalletAccount,
+  cairo,
+  CallData,
+  stark,
+} from "starknet";
 import { flattenFieldsAsArray } from "./utils/proof";
 import initNoirC from "@noir-lang/noirc_abi";
 import initACVM from "@noir-lang/acvm_js";
@@ -59,8 +72,6 @@ export const useGameActions = () => {
         console.error("Failed to initialize WASM in App component:", error);
       }
     };
-
-
 
     const loadVk = async (vkUrl: any, setVk: (res: Uint8Array) => void) => {
       const response = await fetch(vkUrl);
@@ -142,7 +153,7 @@ export const useGameActions = () => {
       return {};
     }
   };
- 
+
   const submitWolfCommitment = async (gameId: number, commitment: string) => {
     try {
       showTransactionToast();
@@ -200,7 +211,10 @@ export const useGameActions = () => {
       console.log(inputs);
       console.log("wolfKillSheep - wolfCommitment: ", wolfCommitment);
 
-      let noir = new Noir({ bytecode: killSheepByteCode, abi: killSheepAbi as any });
+      let noir = new Noir({
+        bytecode: killSheepByteCode,
+        abi: killSheepAbi as any,
+      });
       let execResult = await noir.execute(inputs);
       console.log(execResult);
 
@@ -211,7 +225,10 @@ export const useGameActions = () => {
       honk.destroy();
       console.log(proof);
 
-      const rawProof = reconstructHonkProof(flattenFieldsAsArray(proof.publicInputs), proof.proof);
+      const rawProof = reconstructHonkProof(
+        flattenFieldsAsArray(proof.publicInputs),
+        proof.proof
+      );
       const honkProof = parseHonkProofFromBytes(rawProof);
       const honkVk = parseHonkVerifyingKeyFromBytes(killSheepvk as Uint8Array);
       const callData = getHonkCallData(
@@ -292,7 +309,8 @@ export const useGameActions = () => {
     sheepPositions: number[],
     sheepAlive: boolean[],
     suspiciousSheepIndex: number,
-    wolfCommitment: string
+    wolfCommitment: string,
+    isWolfResult: number
   ) => {
     console.log("checkIsWolf");
     try {
@@ -306,6 +324,7 @@ export const useGameActions = () => {
         sheep_alive: sheepAlive,
         wolf_commitment: wolfCommitment,
         sheep_to_check_index: suspiciousSheepIndex,
+        is_wolf_result: isWolfResult,
       };
       console.log(inputs);
       console.log("checkIsWolf - wolfCommitment: ", wolfCommitment);
@@ -321,7 +340,10 @@ export const useGameActions = () => {
       honk.destroy();
       console.log(proof);
 
-      const rawProof = reconstructHonkProof(flattenFieldsAsArray(proof.publicInputs), proof.proof);
+      const rawProof = reconstructHonkProof(
+        flattenFieldsAsArray(proof.publicInputs),
+        proof.proof
+      );
       const honkProof = parseHonkProofFromBytes(rawProof);
       const honkVk = parseHonkVerifyingKeyFromBytes(wolfVk as Uint8Array);
       const callData = getHonkCallData(

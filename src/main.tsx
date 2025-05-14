@@ -17,6 +17,10 @@ import { StarknetProvider } from "./providers/StarknetProvider.tsx";
 import { ChakraBaseProvider, extendTheme } from "@chakra-ui/react";
 import customTheme from "./theme/theme";
 import { init as start } from "garaga";
+import initNoirC from "@noir-lang/noirc_abi";
+import initACVM from "@noir-lang/acvm_js";
+import acvm from "@noir-lang/acvm_js/web/acvm_js_bg.wasm?url";
+import noirc from "@noir-lang/noirc_abi/web/noirc_abi_wasm_bg.wasm?url";
 
 const I18N_NAMESPACES = [
   "game",
@@ -63,7 +67,25 @@ async function init() {
     const setupPromise = setup(dojoConfig);
     const garagaPromise = start();
 
-    const [setupResult] = await Promise.all([setupPromise, garagaPromise]);
+    const initWasm = async () => {
+      try {
+        // This might have already been initialized in main.tsx,
+        // but we're adding it here as a fallback
+        if (typeof window !== "undefined") {
+          await Promise.all([initACVM(fetch(acvm)), initNoirC(fetch(noirc))]);
+          console.log("WASM initialization in App component complete");
+        }
+      } catch (error) {
+        console.error("Failed to initialize WASM in App component:", error);
+      }
+    };
+    const wasmPromise = initWasm();
+
+    const [setupResult] = await Promise.all([
+      setupPromise,
+      garagaPromise,
+      wasmPromise,
+    ]);
 
     setCanFadeOut(true);
 

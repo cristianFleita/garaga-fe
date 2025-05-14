@@ -6,6 +6,7 @@ import {
   CairoOption,
   CairoCustomEnum,
   ByteArray,
+  Uint256,
 } from "starknet";
 import * as models from "./models.gen";
 
@@ -123,7 +124,7 @@ export function setupWorld(provider: DojoProvider) {
 
   const build_game_system_submitWolfCommitment_calldata = (
     gameId: BigNumberish,
-    wolfCommitment: BigNumberish
+    wolfCommitment: Uint256
   ): DojoCall => {
     return {
       contractName: "game_system",
@@ -135,7 +136,7 @@ export function setupWorld(provider: DojoProvider) {
   const game_system_submitWolfCommitment = async (
     snAccount: Account | AccountInterface,
     gameId: BigNumberish,
-    wolfCommitment: BigNumberish
+    wolfCommitment: Uint256
   ) => {
     try {
       return await provider.execute(

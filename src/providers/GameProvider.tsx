@@ -83,7 +83,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (
-      round?.state.toString() == RoundStateEnum.WaitingForWolfResult 
+      round?.state.toString() == RoundStateEnum.WaitingForWolfResult
       // TODO: && isWolf
     ) {
       executeCheckIsWolf();
@@ -212,6 +212,12 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
       const sheepPositions = cells.map((cell) => cell.value);
       const sheepAlive = cells.map((cell) => cell.is_alive);
 
+      const cell = cells.find(
+        (cell) => cell.idx === round?.suspicious_sheep_index
+      );
+
+      const isWolf = cell?.value === Number(wolfValue);
+
       await checkIsWolf(
         gameId,
         Number(wolfValue),
@@ -220,7 +226,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
         sheepPositions,
         sheepAlive,
         round?.suspicious_sheep_index ?? 0,
-        wolfCommitment
+        wolfCommitment,
+        Number(isWolf)
       ).then(() => {
         console.log("Wolf checked successfully");
       });
