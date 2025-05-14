@@ -68,6 +68,7 @@ export const Game = () => {
           p={2}
           height="100%"
           justifyContent={"center"}
+          overflow="hidden"
         >
           <Flex
             gap={20}
@@ -75,6 +76,7 @@ export const Game = () => {
             flexGrow={1}
             height={"100%"}
             justifyContent={"space-evenly"}
+            overflow="hidden"
           >
             <GameSidebarMenu
               characterId={
@@ -84,7 +86,12 @@ export const Game = () => {
               showChooseButton={canChoose}
               selectedCell={selectedCell}
             />
-            <Flex flexDirection={"column"} height={"100%"} width={"40%"}>
+            <Flex 
+              flexDirection={"column"} 
+              height={"100%"} 
+              width={"40%"}
+              overflow="hidden"
+            >
               <MenuContainer full>
                 <GameGrid
                   cells={gridCells}

@@ -16,6 +16,8 @@ export const MenuContainer: React.FC<{
       gap={8}
       borderRadius={8}
       height={full ? "100%" : "auto"}
+      width="100%"
+      overflow="hidden"
     >
       {children}
     </Flex>
