@@ -22,7 +22,7 @@ export const InformationPopUp = ({
       alignItems={"center"}
       flexDirection={"column"}
       backdropFilter="blur(5px)"
-      backgroundColor=" rgba(0, 0, 0, 0.5)"
+      backgroundColor=" rgba(0, 0, 0, 0)"
       gap={6}
       onClick={() => {
         onClose();

@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Box, useBreakpointValue } from "@chakra-ui/react";
 import { MenuContainer } from "../components/MenuContainer";
 import { GameSidebarMenu } from "../components/GameSidebarMenu";
 import { GameGrid } from "../components/GameGrid";
@@ -43,6 +43,7 @@ export const Game = () => {
   } = useGameContext();
 
   const [selectedCell, setSelectedCell] = useState<GridCell | null>(null);
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   useEffect(() => {
     if (account !== masterAccount && username) {
@@ -71,35 +72,65 @@ export const Game = () => {
           overflow="hidden"
         >
           <Flex
-            gap={20}
+            flexDirection={isMobile ? "column" : "row"}
+            gap={isMobile ? 4 : 20}
             p={2}
             flexGrow={1}
             height={"100%"}
             justifyContent={"space-evenly"}
+            alignItems="center"
             overflow="hidden"
           >
-            <GameSidebarMenu
-              characterId={
-                isWolf ? CharacterIdEnum.WOLF : CharacterIdEnum.SHEPHERD
-              }
-              showHideButton={canHide}
-              showChooseButton={canChoose}
-              selectedCell={selectedCell}
-            />
-            <Flex 
-              flexDirection={"column"} 
-              height={"100%"} 
-              width={"40%"}
-              overflow="hidden"
+            {/* Game Grid for mobile - shown at top on small screens */}
+            {isMobile && (
+              <Flex 
+                flexDirection={"column"} 
+                width={"100%"}
+                maxWidth="500px"
+                overflow="hidden"
+              >
+                <MenuContainer full>
+                  <GameGrid
+                    cells={gridCells}
+                    canSelect={isPlayerTurn}
+                    setSelectedCell={setSelectedCell}
+                  />
+                </MenuContainer>
+              </Flex>
+            )}
+            
+            {/* Character and buttons */}
+            <Box
+              width={isMobile ? "100%" : "auto"}
+              maxWidth={isMobile ? "300px" : "auto"}
             >
-              <MenuContainer full>
-                <GameGrid
-                  cells={gridCells}
-                  canSelect={isPlayerTurn}
-                  setSelectedCell={setSelectedCell}
-                />
-              </MenuContainer>
-            </Flex>
+              <GameSidebarMenu
+                characterId={
+                  isWolf ? CharacterIdEnum.WOLF : CharacterIdEnum.SHEPHERD
+                }
+                showHideButton={canHide}
+                showChooseButton={canChoose}
+                selectedCell={selectedCell}
+              />
+            </Box>
+            
+            {/* Game Grid for desktop - shown beside character on larger screens */}
+            {!isMobile && (
+              <Flex 
+                flexDirection={"column"} 
+                height={"100%"} 
+                width={"40%"}
+                overflow="hidden"
+              >
+                <MenuContainer full>
+                  <GameGrid
+                    cells={gridCells}
+                    canSelect={isPlayerTurn}
+                    setSelectedCell={setSelectedCell}
+                  />
+                </MenuContainer>
+              </Flex>
+            )}
           </Flex>
         </Flex>
       </>
