@@ -32,7 +32,10 @@ export const GameGrid = ({
       gap={2}
       p={2}
       height="100%"
-      width={"100%"}
+      width="100%"
+      overflow="hidden"
+      maxHeight="100%"
+      aspectRatio="1"
     >
       {filledCells.map((cell, index) => {
         const isSelected = index === selectedIndex;
@@ -54,6 +57,7 @@ export const GameGrid = ({
             boxShadow={isSelected ? `0 0 0 2px white` : "none"}
             cursor={canSelect ? "pointer" : "default"}
             onClick={() => handleSelect(cell)}
+            overflow="hidden"
           />
         );
       })}

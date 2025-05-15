@@ -11,11 +11,13 @@ export const MenuContainer: React.FC<{
       backgroundColor={`${BROWN}`}
       boxShadow={`0px 0px 4px 2px ${BROWN_DARK}`}
       alignItems={"center"}
-      px={8}
-      py={12}
-      gap={8}
+      justifyContent="center"
+      p={4}
+      gap={4}
       borderRadius={8}
       height={full ? "100%" : "auto"}
+      width="100%"
+      overflow="hidden"
     >
       {children}
     </Flex>

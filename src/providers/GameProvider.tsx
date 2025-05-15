@@ -64,6 +64,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     oponent,
     winner,
     resetState,
+    getCellByValue,
+    cells,
   } = state;
 
   const {
@@ -81,8 +83,8 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (
-      round?.state.toString() == RoundStateEnum.WaitingForWolfResult &&
-      isWolf
+      round?.state.toString() == RoundStateEnum.WaitingForWolfResult
+      // TODO: && isWolf
     ) {
       executeCheckIsWolf();
     }
@@ -139,14 +141,16 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     try {
       const wolfSalt = generateRandomSalt();
       const wolfCommitment = poseidonHashBN254(
-        BigInt(wolfSalt),
-        BigInt(selectedSheepValue)
-      );
+        BigInt(selectedSheepValue),
+        BigInt(wolfSalt)
+      ).toString();
 
       localStorage.setItem(WOLF_INDEX, selectedSheepValue.toString());
       localStorage.setItem(WOLF_SALT, wolfSalt.toString());
 
-      submitWolfCommitment(gameId, Number(wolfCommitment)).then(() => {
+      console.log("SubmitWolfCommitment - wolfCommitment: ", wolfCommitment);
+
+      submitWolfCommitment(gameId, wolfCommitment).then(() => {
         console.log("submited successfully");
       });
     } catch (e) {
@@ -156,7 +160,26 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
 
   const executeKillSheep = async (sheepToKillIndex: number) => {
     try {
-      await wolfKillSheep(gameId, Number(sheepToKillIndex)).then(() => {
+      const wolfValue = BigInt(localStorage.getItem(WOLF_INDEX) ?? 0);
+      const wolfCommitment = poseidonHashBN254(
+        BigInt(wolfValue),
+        BigInt(localStorage.getItem(WOLF_SALT) ?? 0)
+      ).toString();
+      const wolf_index = getCellByValue(Number(wolfValue));
+
+      const sheepPositions = cells.map((cell) => cell.value);
+      const sheepAlive = cells.map((cell) => cell.is_alive);
+
+      await wolfKillSheep(
+        gameId,
+        Number(wolfValue),
+        localStorage.getItem(WOLF_SALT) ?? "0",
+        wolf_index?.idx ?? 0,
+        sheepPositions,
+        sheepAlive,
+        sheepToKillIndex,
+        wolfCommitment
+      ).then(() => {
         console.log("Sheep killed successfully");
       });
     } catch (e) {
@@ -177,8 +200,35 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const executeCheckIsWolf = async () => {
+    console.log("executeCheckIsWolf");
     try {
-      await checkIsWolf(gameId).then(() => {
+      const wolfValue = BigInt(localStorage.getItem(WOLF_INDEX) ?? 0);
+      const wolfCommitment = poseidonHashBN254(
+        BigInt(wolfValue),
+        BigInt(localStorage.getItem(WOLF_SALT) ?? 0)
+      ).toString();
+      const wolf_index = getCellByValue(Number(wolfValue));
+
+      const sheepPositions = cells.map((cell) => cell.value);
+      const sheepAlive = cells.map((cell) => cell.is_alive);
+
+      const cell = cells.find(
+        (cell) => cell.idx === round?.suspicious_sheep_index
+      );
+
+      const isWolf = cell?.value === Number(wolfValue);
+
+      await checkIsWolf(
+        gameId,
+        Number(wolfValue),
+        localStorage.getItem(WOLF_SALT) ?? "0",
+        wolf_index?.idx ?? 0,
+        sheepPositions,
+        sheepAlive,
+        round?.suspicious_sheep_index ?? 0,
+        wolfCommitment,
+        Number(isWolf)
+      ).then(() => {
         console.log("Wolf checked successfully");
       });
     } catch (e) {

@@ -1,4 +1,4 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, useBreakpointValue } from "@chakra-ui/react";
 import { BROWN, BROWN_DARKEST } from "../theme/colors";
 import { characterImageMap } from "../constants/characterMap";
 import { useGameContext } from "../providers/GameProvider";
@@ -18,6 +18,7 @@ export const GameSidebarMenu = ({
   selectedCell,
 }: GameSidebarMenuProps) => {
   const characterImage = characterImageMap[characterId];
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   const {
     submitWolfCommitment,
@@ -28,19 +29,27 @@ export const GameSidebarMenu = ({
 
   return (
     <Flex
-      flexDirection="column"
+      flexDirection={isMobile ? "row" : "column"}
       gap={4}
       p={2}
-      height={"100%"}
-      justifyContent={"space-around"}
+      height={isMobile ? "auto" : "100%"}
+      width="100%"
+      justifyContent={isMobile ? "space-around" : "space-between"}
+      alignItems="center"
     >
-      <Flex flexDirection={"column"} gap={4}>
+      <Flex 
+        flexDirection={isMobile ? "row" : "column"} 
+        gap={4}
+        width={isMobile ? "auto" : "100%"}
+        justifyContent={isMobile ? "center" : "flex-start"}
+      >
         {showHideButton && (
           <Button
             variant="secondarySolid"
             onClick={() => {
               submitWolfCommitment(selectedCell?.value ?? 0);
             }}
+            size={isMobile ? "md" : "lg"}
           >
             Hide
           </Button>
@@ -52,14 +61,15 @@ export const GameSidebarMenu = ({
               if (isWolf) wolfKillSheep(selectedCell?.idx ?? 0);
               else shepherdMarkSuspicious(selectedCell?.idx ?? 0);
             }}
+            size={isMobile ? "md" : "lg"}
           >
             Choose
           </Button>
         )}
       </Flex>
-      <Flex flexDirection={"column"}>
+      <Box>
         <Box
-          boxSize="250px"
+          boxSize={isMobile ? "150px" : "250px"}
           borderRadius="full"
           bg={BROWN_DARKEST}
           border={`4px solid ${BROWN}`}
@@ -76,7 +86,7 @@ export const GameSidebarMenu = ({
             backgroundPosition="center"
           />
         </Box>
-      </Flex>
+      </Box>
     </Flex>
   );
 };

@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Text, Box, useBreakpointValue } from "@chakra-ui/react";
 import { BROWN } from "../theme/colors";
 import { UserComponent } from "./UsernameComponent";
 
@@ -9,15 +9,38 @@ interface GameHeaderProps {
 }
 
 export const GameHeader = ({ username, gameId, round }: GameHeaderProps) => {
+  const isMobile = useBreakpointValue({ base: true, md: false });
+  
   return (
-    <Flex alignItems="center" p={2}>
+    <Flex 
+      alignItems="center" 
+      p={2}
+      flexDirection={isMobile ? "column" : "row"}
+      gap={isMobile ? 2 : 0}
+    >
       <UserComponent username={username} />
-      <Text color={BROWN} fontSize="40px" fontWeight={900} ml="auto">
-        GAME ID {gameId}
-      </Text>
-      <Text color={BROWN} fontSize="40px" fontWeight={900} ml="auto">
-        ROUND {round}
-      </Text>
+      
+      <Flex 
+        ml={isMobile ? 0 : "auto"} 
+        flexDirection={isMobile ? "column" : "row"}
+        alignItems={isMobile ? "center" : "flex-end"}
+        gap={isMobile ? 1 : 4}
+      >
+        <Text 
+          color={BROWN} 
+          fontSize={isMobile ? "24px" : "40px"} 
+          fontWeight={900}
+        >
+          GAME ID {gameId}
+        </Text>
+        <Text 
+          color={BROWN} 
+          fontSize={isMobile ? "24px" : "40px"} 
+          fontWeight={900}
+        >
+          ROUND {round}
+        </Text>
+      </Flex>
     </Flex>
   );
 };
