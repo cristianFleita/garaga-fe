@@ -11,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { GridCell } from "../types/GameGrid";
 import { useRound } from "../dojo/queries/useRound";
 import { RoundStateEnum } from "../dojo/typescript/custom";
+import { num } from "starknet";
+import { useGame } from "../dojo/queries/useGame";
 
 export interface IGameContext {
   gameId: number;
@@ -50,6 +52,7 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
   const state = useGameState();
   const round = useRound();
+  const game = useGame();
 
   const {
     gameId,
@@ -82,9 +85,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   }
 
   useEffect(() => {
+    const wolfPlayer = num.toHexString(game?.wolf.toString() ?? 0);
     if (
-      round?.state.toString() == RoundStateEnum.WaitingForWolfResult
-      // TODO: && isWolf
+      round?.state.toString() == RoundStateEnum.WaitingForWolfResult &&
+      wolfPlayer === player.username
     ) {
       executeCheckIsWolf();
     }

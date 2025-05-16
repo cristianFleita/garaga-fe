@@ -9,7 +9,6 @@ import { useCells } from "../dojo/queries/useCells";
 import { CellType, GridCell } from "../types/GameGrid";
 import { decodeString } from "../dojo/utils/decodeString";
 import { num } from "starknet";
-import { Cell } from "../types/Cell";
 
 export interface Player {
   username: string;
@@ -48,7 +47,7 @@ export const useGameState = () => {
 
   // console.log(round);
   // console.log(game);
-  console.log(cells);
+  // console.log(cells);
 
   useEffect(() => {
     if (game?.state == GameStateEnum.Waiting) setShowWaitForPlayer(true);
@@ -93,9 +92,8 @@ export const useGameState = () => {
   }, [round?.current_turn]);
 
   useEffect(() => {
-    // if (gridCells.length === 0) {
     const lsWolfValue = Number(localStorage.getItem(WOLF_INDEX)) ?? 0;
-    console.log("ATTEMP TO UPDATE CELLS");
+
     setGridCells(
       cells.map((cell) => ({
         type:
@@ -108,7 +106,6 @@ export const useGameState = () => {
         idx: cell.idx,
       }))
     );
-    // }
   }, [cells.length, cells, round?.current_turn, round?.state]);
 
   useEffect(() => {
