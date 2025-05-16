@@ -9,6 +9,7 @@ import { useCells } from "../dojo/queries/useCells";
 import { CellType, GridCell } from "../types/GameGrid";
 import { decodeString } from "../dojo/utils/decodeString";
 import { num } from "starknet";
+import { Cell } from "../types/Cell";
 
 export interface Player {
   username: string;
@@ -34,6 +35,7 @@ export const useGameState = () => {
   const [player, setPlayer] = useState<Player>({ username: "", points: 0 });
   const [oponent, setOponent] = useState<Player>({ username: "", points: 0 });
   const [winner, setWinner] = useState(false);
+  // const [cells, setCells] = useState<Cell[]>(useCells());
 
   const lsSetGameId = (gameId: number) => {
     localStorage.setItem(GAME_ID, gameId.toString());
@@ -44,8 +46,8 @@ export const useGameState = () => {
   const round = useRound();
   const cells = useCells();
 
-  console.log(round);
-  console.log(game);
+  // console.log(round);
+  // console.log(game);
   console.log(cells);
 
   useEffect(() => {
@@ -91,22 +93,23 @@ export const useGameState = () => {
   }, [round?.current_turn]);
 
   useEffect(() => {
-    if (gridCells.length === 0) {
-      const lsWolfValue = Number(localStorage.getItem(WOLF_INDEX)) ?? 0;
-      setGridCells(
-        cells.map((cell) => ({
-          type:
-            isWolf && cell.value == lsWolfValue
-              ? CellType.SHEEP_FAKE
-              : cell.is_alive
-                ? CellType.SHEEP
-                : CellType.SHEEP_DEAD,
-          value: cell.value,
-          idx: cell.idx,
-        }))
-      );
-    }
-  }, [cells.length, cells]);
+    // if (gridCells.length === 0) {
+    const lsWolfValue = Number(localStorage.getItem(WOLF_INDEX)) ?? 0;
+    console.log("ATTEMP TO UPDATE CELLS");
+    setGridCells(
+      cells.map((cell) => ({
+        type:
+          isWolf && cell.value == lsWolfValue
+            ? CellType.SHEEP_FAKE
+            : cell.is_alive
+              ? CellType.SHEEP
+              : CellType.SHEEP_DEAD,
+        value: cell.value,
+        idx: cell.idx,
+      }))
+    );
+    // }
+  }, [cells.length, cells, round?.current_turn, round?.state]);
 
   useEffect(() => {
     const player1 = num.toHexString(game?.player_1.toString() ?? 0);

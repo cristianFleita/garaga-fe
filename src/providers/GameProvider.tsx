@@ -88,6 +88,10 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
     ) {
       executeCheckIsWolf();
     }
+
+    if (round?.state.toString() == RoundStateEnum.WaitingForWolfCommitment) {
+      localStorage.removeItem(WOLF_INDEX);
+    }
   }, [round?.state]);
 
   // TODO: Use on game page

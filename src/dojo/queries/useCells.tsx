@@ -4,6 +4,7 @@ import { getLSGameId } from "../utils/getLSGameId";
 import { Entity, getComponentValue } from "@dojoengine/recs";
 import { Cell } from "../../types/Cell";
 import { useEffect, useState } from "react";
+import { useRound } from "./useRound";
 
 const GRID_SIZE = 16;
 
@@ -15,6 +16,7 @@ export const useCells = (): Cell[] => {
   } = useDojo();
 
   const gameId = getLSGameId();
+  const round = useRound();
 
   const [cells, setCells] = useState<Cell[]>([]);
 
@@ -49,7 +51,14 @@ export const useCells = (): Cell[] => {
 
       return () => clearTimeout(retryTimeout);
     }
-  }, [gameId, Cell, cells.length]);
+  }, [
+    gameId,
+    Cell,
+    cells.length,
+    round?.current_turn,
+    round?.state,
+    round?.surviving_sheep,
+  ]);
 
   return cells;
 };
