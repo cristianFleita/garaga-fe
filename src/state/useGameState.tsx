@@ -9,9 +9,11 @@ import { useCells } from "../dojo/queries/useCells";
 import { CellType, GridCell } from "../types/GameGrid";
 import { decodeString } from "../dojo/utils/decodeString";
 import { num } from "starknet";
+import { lookupAddresses } from "@cartridge/controller";
 
 export interface Player {
   username: string;
+  controllerName: string;
   points: number;
 }
 
@@ -31,10 +33,18 @@ export const useGameState = () => {
   const [canHide, setCanHide] = useState(false);
   const [canChoose, setCanChoose] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  const [player, setPlayer] = useState<Player>({ username: "", points: 0 });
-  const [oponent, setOponent] = useState<Player>({ username: "", points: 0 });
+  const [player, setPlayer] = useState<Player>({
+    username: "",
+    controllerName: "",
+    points: 0,
+  });
+  const [oponent, setOponent] = useState<Player>({
+    username: "",
+    controllerName: "",
+    points: 0,
+  });
   const [winner, setWinner] = useState(false);
-  // const [cells, setCells] = useState<Cell[]>(useCells());
+  const [userNameMap, setUserNameMap] = useState<Map<string, string>>();
 
   const lsSetGameId = (gameId: number) => {
     localStorage.setItem(GAME_ID, gameId.toString());
@@ -63,6 +73,26 @@ export const useGameState = () => {
       setShowWaitForPlayer(false);
     }
   }, [game?.state, isPlayerTurn]);
+
+  useEffect(() => {
+    lookupAddresses([player.username, oponent.username]).then((result) => {
+      if (userNameMap && userNameMap?.keys?.length > 0) return;
+
+      setUserNameMap(result);
+
+      setPlayer((prev) => ({
+        username: prev.username,
+        controllerName: userNameMap?.get(player.username) ?? "",
+        points: prev.points,
+      }));
+
+      setOponent((prev) => ({
+        username: prev.username,
+        controllerName: userNameMap?.get(oponent.username) ?? "",
+        points: prev.points,
+      }));
+    });
+  }, [player, oponent]);
 
   useEffect(() => {
     setCanChoose(
@@ -116,13 +146,30 @@ export const useGameState = () => {
 
     setPlayer({
       username: isPlayer1 ? player1 : player2,
+      controllerName: "",
       points: isPlayer1 ? game?.player_1_score ?? 0 : game?.player_2_score ?? 0,
     });
 
     setOponent({
       username: isPlayer1 ? player2 : player1,
+      controllerName: "",
       points: isPlayer1 ? game?.player_2_score ?? 0 : game?.player_1_score ?? 0,
     });
+  }, [game?.player_1, game?.player_2]);
+
+  useEffect(() => {
+    const isPlayer1 = player.username === account.address;
+
+    setPlayer((prev) => ({
+      username: prev.username,
+      controllerName: prev.controllerName,
+      points: isPlayer1 ? game?.player_1_score ?? 0 : game?.player_2_score ?? 0,
+    }));
+    setOponent((prev) => ({
+      username: prev.username,
+      controllerName: prev.controllerName,
+      points: isPlayer1 ? game?.player_2_score ?? 0 : game?.player_1_score ?? 0,
+    }));
   }, [game?.player_1_score, game?.player_2_score]);
 
   const resetState = () => {
@@ -133,8 +180,8 @@ export const useGameState = () => {
     setCanChoose(false);
     setWinner(false);
     setGameOver(false);
-    setPlayer({ username: "", points: 0 });
-    setOponent({ username: "", points: 0 });
+    setPlayer({ username: "", controllerName: "", points: 0 });
+    setOponent({ username: "", controllerName: "", points: 0 });
   };
 
   const getCellByValue = (value: number) => {
