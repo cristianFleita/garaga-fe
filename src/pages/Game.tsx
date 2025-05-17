@@ -59,7 +59,7 @@ export const Game = () => {
           <GameoverPopup player={player} oponent={oponent} winner={winner} />
         )}
         <GameHeader
-          username={username ?? ""}
+          username={player.controllerName ?? ""}
           gameId={Number(round?.game_id)}
           round={Number(game?.round_count)}
         />
@@ -83,8 +83,8 @@ export const Game = () => {
           >
             {/* Game Grid for mobile - shown at top on small screens */}
             {isMobile && (
-              <Flex 
-                flexDirection={"column"} 
+              <Flex
+                flexDirection={"column"}
                 width={"100%"}
                 maxWidth="500px"
                 overflow="hidden"
@@ -98,7 +98,7 @@ export const Game = () => {
                 </MenuContainer>
               </Flex>
             )}
-            
+
             {/* Character and buttons */}
             <Box
               width={isMobile ? "100%" : "auto"}
@@ -113,12 +113,12 @@ export const Game = () => {
                 selectedCell={selectedCell}
               />
             </Box>
-            
+
             {/* Game Grid for desktop - shown beside character on larger screens */}
             {!isMobile && (
-              <Flex 
-                flexDirection={"column"} 
-                height={"100%"} 
+              <Flex
+                flexDirection={"column"}
+                height={"100%"}
                 width={"40%"}
                 overflow="hidden"
               >
