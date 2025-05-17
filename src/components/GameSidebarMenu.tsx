@@ -9,6 +9,7 @@ interface GameSidebarMenuProps {
   showChooseButton?: boolean;
   characterId: number;
   selectedCell: GridCell | null;
+  setSelectedIndex: (index: number | null) => void;
 }
 
 export const GameSidebarMenu = ({
@@ -16,6 +17,7 @@ export const GameSidebarMenu = ({
   showChooseButton = true,
   characterId,
   selectedCell,
+  setSelectedIndex,
 }: GameSidebarMenuProps) => {
   const characterImage = characterImageMap[characterId];
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -37,8 +39,8 @@ export const GameSidebarMenu = ({
       justifyContent={isMobile ? "space-around" : "space-between"}
       alignItems="center"
     >
-      <Flex 
-        flexDirection={isMobile ? "row" : "column"} 
+      <Flex
+        flexDirection={isMobile ? "row" : "column"}
         gap={4}
         width={isMobile ? "auto" : "100%"}
         justifyContent={isMobile ? "center" : "flex-start"}
@@ -48,6 +50,7 @@ export const GameSidebarMenu = ({
             variant="secondarySolid"
             onClick={() => {
               submitWolfCommitment(selectedCell?.value ?? 0);
+              setSelectedIndex(null);
             }}
             size={isMobile ? "md" : "lg"}
           >
@@ -60,6 +63,8 @@ export const GameSidebarMenu = ({
             onClick={() => {
               if (isWolf) wolfKillSheep(selectedCell?.idx ?? 0);
               else shepherdMarkSuspicious(selectedCell?.idx ?? 0);
+
+              setSelectedIndex(null);
             }}
             size={isMobile ? "md" : "lg"}
           >

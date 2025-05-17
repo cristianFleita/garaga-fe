@@ -13,6 +13,7 @@ import { useGameContext } from "../providers/GameProvider";
 import { useRound } from "../dojo/queries/useRound";
 import { useGame } from "../dojo/queries/useGame";
 import { GridCell } from "../types/GameGrid";
+import { RoundStateEnum } from "../dojo/typescript/custom";
 
 enum CharacterIdEnum {
   SHEPHERD = 1,
@@ -43,7 +44,14 @@ export const Game = () => {
   } = useGameContext();
 
   const [selectedCell, setSelectedCell] = useState<GridCell | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
   const isMobile = useBreakpointValue({ base: true, md: false });
+  const selectionColor =
+    round?.state.toString() === RoundStateEnum.WaitingForWolfSelection ||
+    round?.state.toString() === RoundStateEnum.WaitingForSheepToKill
+      ? "red"
+      : "blue";
 
   useEffect(() => {
     if (account !== masterAccount && username) {
@@ -94,6 +102,9 @@ export const Game = () => {
                     cells={gridCells}
                     canSelect={isPlayerTurn}
                     setSelectedCell={setSelectedCell}
+                    selectionColor={selectionColor}
+                    selectedIndex={selectedIndex}
+                    setSelectedIndex={setSelectedIndex}
                   />
                 </MenuContainer>
               </Flex>
@@ -111,6 +122,7 @@ export const Game = () => {
                 showHideButton={canHide}
                 showChooseButton={canChoose}
                 selectedCell={selectedCell}
+                setSelectedIndex={setSelectedIndex}
               />
             </Box>
 
@@ -127,6 +139,9 @@ export const Game = () => {
                     cells={gridCells}
                     canSelect={isPlayerTurn}
                     setSelectedCell={setSelectedCell}
+                    selectionColor={selectionColor}
+                    selectedIndex={selectedIndex}
+                    setSelectedIndex={setSelectedIndex}
                   />
                 </MenuContainer>
               </Flex>
