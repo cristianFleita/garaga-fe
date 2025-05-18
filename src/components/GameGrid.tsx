@@ -7,14 +7,20 @@ interface GameGridProps {
   cells?: GridCell[];
   canSelect?: boolean;
   setSelectedCell: (index: GridCell) => void;
+  selectionColor?: string;
+  selectedIndex: number | null;
+  setSelectedIndex: (index: number) => void;
 }
 
 export const GameGrid = ({
   cells,
   canSelect = false,
   setSelectedCell,
+  selectionColor = "white",
+  selectedIndex,
+  setSelectedIndex,
 }: GameGridProps) => {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  // const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const handleSelect = (cell: GridCell) => {
     if (canSelect) {
       setSelectedIndex(cell.idx);
@@ -54,7 +60,7 @@ export const GameGrid = ({
             backgroundPosition="center"
             transition="all 0.2s ease-in-out"
             transform={isSelected ? "scale(1.05)" : "scale(1)"}
-            boxShadow={isSelected ? `0 0 0 2px white` : "none"}
+            boxShadow={isSelected ? `0 0 0 2px ${selectionColor}` : "none"}
             cursor={canSelect ? "pointer" : "default"}
             onClick={() => handleSelect(cell)}
             overflow="hidden"
