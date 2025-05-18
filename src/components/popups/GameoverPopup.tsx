@@ -49,13 +49,13 @@ export const GameoverPopup: React.FC<GameoverPopupProps> = ({
               p={4}
             >
               <PlayerResults
-                username={player.username}
+                username={player.controllerName}
                 points={player.points}
                 highlight
                 winner={winner}
               />
               <PlayerResults
-                username={oponent.username}
+                username={oponent.controllerName}
                 points={oponent.points}
                 winner={!winner}
               />
