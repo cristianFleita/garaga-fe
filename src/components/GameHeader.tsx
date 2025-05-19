@@ -1,5 +1,5 @@
 import { Flex, Text, Box, useBreakpointValue } from "@chakra-ui/react";
-import { BROWN } from "../theme/colors";
+import { BROWN_DARKEST } from "../theme/colors";
 import { UserComponent } from "./UsernameComponent";
 
 interface GameHeaderProps {
@@ -27,14 +27,14 @@ export const GameHeader = ({ username, gameId, round }: GameHeaderProps) => {
         gap={isMobile ? 1 : 4}
       >
         <Text 
-          color={BROWN} 
+          color={BROWN_DARKEST} 
           fontSize={isMobile ? "24px" : "40px"} 
           fontWeight={900}
         >
           GAME ID {gameId}
         </Text>
         <Text 
-          color={BROWN} 
+          color={BROWN_DARKEST} 
           fontSize={isMobile ? "24px" : "40px"} 
           fontWeight={900}
         >

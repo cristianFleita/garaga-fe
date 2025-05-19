@@ -20,7 +20,7 @@ export const UserComponent: React.FC<UserComponentProps> = ({ username }) => {
       >
         <FaUser color="white" size="24px" />
       </Box>
-      <Text fontWeight="bold" fontSize="sm" color={BROWN}>
+      <Text fontWeight="bold" fontSize="24px" color={BROWN_DARKEST}>
         {username}
       </Text>
     </Flex>

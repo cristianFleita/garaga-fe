@@ -27,8 +27,11 @@ export const Home = () => {
     >
       <Image 
         src="images/bg/home-bg.png" 
-        width={"50%"} 
+        width={["90%", "80%", "70%"]}
+        minW={"400px"}
+        maxW={"1200px"}
         mt={"20vh"}
+        objectFit={"contain"}
       />
 
       <Button
