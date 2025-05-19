@@ -13,7 +13,7 @@ export const InformationPopUp = ({
   return (
     <Flex
       position={"absolute"}
-      top={"10%"}
+      top={"50%"}
       left={0}
       width={"100%"}
       height={"100%"}
@@ -24,6 +24,7 @@ export const InformationPopUp = ({
       backdropFilter="blur(5px)"
       backgroundColor=" rgba(0, 0, 0, 0)"
       gap={6}
+      transform={"translateY(-50%)"}
       onClick={() => {
         onClose();
       }}
