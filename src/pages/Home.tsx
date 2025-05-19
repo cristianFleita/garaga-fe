@@ -20,8 +20,16 @@ export const Home = () => {
   }, [account, playButtonClicked]);
 
   return (
-    <Flex flexDir={"column"} alignItems={"center"}>
-      <Image src="images/bg/home-bg.png" width={"50%"} />
+    <Flex 
+      flexDir={"column"} 
+      alignItems={"center"} 
+      minH={"100vh"}
+    >
+      <Image 
+        src="images/bg/home-bg.png" 
+        width={"50%"} 
+        mt={"20vh"}
+      />
 
       <Button
         variant="secondarySolid"
@@ -38,6 +46,7 @@ export const Home = () => {
         }}
         width={"20%"}
         minW={["150px", "300px"]}
+        mt={8}
       >
         Start
       </Button>

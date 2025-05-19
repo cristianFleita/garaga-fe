@@ -1,4 +1,4 @@
-import { Button, Flex, Input } from "@chakra-ui/react";
+import { Button, Flex, Input, Image } from "@chakra-ui/react";
 import { useGameContext } from "../providers/GameProvider";
 import { useCells } from "../dojo/queries/useCells";
 import { useState } from "react";
@@ -18,71 +18,57 @@ export const Lobby = () => {
   const [gameId, setGameId] = useState("");
 
   return (
-    <MenuContainer>
-      <Flex gap={4}>
-        <Input
-          type="number"
-          variant={"solid"}
-          placeholder="Enter game ID"
-          value={gameId}
-          onChange={(e) => {
-            setGameId(e.target.value);
-          }}
-          maxW="260px"
-        />
+    <Flex 
+      flexDir={"column"} 
+      alignItems={"center"} 
+      minH={"100vh"}
+    >
+      <Image 
+        src="images/bg/home-bg.png" 
+        width={"50%"} 
+        mt={"20vh"}
+      />
+      
+      <Flex 
+        flexDir={"column"} 
+        gap={4} 
+        mt={8}
+      >
         <Button
           variant={"secondarySolid"}
+          background={`url(images/bg/btn-bg-1.png)`}
+          backgroundSize={"fit"}
+          backgroundPosition={"center"}
           onClick={() => {
-            joinGame(Number(gameId));
+            executeCreateGame();
           }}
         >
-          Join
+          Create Game
         </Button>
+        <Flex gap={4}>
+          <Input
+            type="number"
+            variant={"solid"}
+            placeholder="Enter game ID"
+            value={gameId}
+            onChange={(e) => {
+              setGameId(e.target.value);
+            }}
+            maxW="260px"
+          />
+          <Button
+            variant={"secondarySolid"}
+            background={`url(images/bg/btn-bg-1.png)`}
+            backgroundSize={"fit"}
+            backgroundPosition={"center"}
+            onClick={() => {
+              joinGame(Number(gameId));
+            }}
+          >
+            Join
+          </Button>
+        </Flex>
       </Flex>
-      <Button
-        variant={"secondarySolid"}
-        onClick={() => {
-          executeCreateGame();
-        }}
-      >
-        Create Game
-      </Button>
-
-      {/* <Button
-        variant={"secondarySolid"}
-        onClick={() => {
-          submitWolfCommitment(1);
-        }}
-      >
-        Submit Commitment
-      </Button>
-
-      <Button
-        variant={"secondarySolid"}
-        onClick={() => {
-          wolfKillSheep(2);
-        }}
-      >
-        Kill sheep
-      </Button>
-
-      <Button
-        variant={"secondarySolid"}
-        onClick={() => {
-          shepherdMarkSuspicious(4);
-        }}
-      >
-        Select sheep
-      </Button>
-
-      <Button
-        variant={"secondarySolid"}
-        onClick={() => {
-          checkIsWolf();
-        }}
-      >
-        check is wolf
-      </Button> */}
-    </MenuContainer>
+    </Flex>
   );
 };
