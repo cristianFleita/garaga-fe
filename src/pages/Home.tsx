@@ -1,4 +1,4 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Button, Flex, Image } from "@chakra-ui/react";
 import { useDojo } from "../dojo/DojoContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -20,9 +20,14 @@ export const Home = () => {
   }, [account, playButtonClicked]);
 
   return (
-    <Flex>
+    <Flex flexDir={"column"} alignItems={"center"}>
+      <Image src="images/bg/home-bg.png" width={"50%"} />
+
       <Button
         variant="secondarySolid"
+        background={`url(images/bg/btn-bg-1.png)`}
+        backgroundSize={"fit"}
+        backgroundPosition={"center"}
         onClick={() => {
           if (isDev) {
             navigate("/login");
@@ -31,6 +36,7 @@ export const Home = () => {
             connect({ connector: connectors[0] });
           }
         }}
+        width={"20%"}
         minW={["150px", "300px"]}
       >
         Start
