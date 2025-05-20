@@ -1,4 +1,4 @@
-import { Button, Flex, Input, Image } from "@chakra-ui/react";
+import { Button, Flex, Input, Image, useToast } from "@chakra-ui/react";
 import { useGameContext } from "../providers/GameProvider";
 import { useCells } from "../dojo/queries/useCells";
 import { useState } from "react";
@@ -16,6 +16,41 @@ export const Lobby = () => {
     checkIsWolf,
   } = useGameContext();
   const [gameId, setGameId] = useState("");
+  const [isJoining, setIsJoining] = useState(false);
+  const toast = useToast();
+
+  const handleJoinGame = () => {
+    // Validar que el ID del juego sea un número válido
+    const parsedGameId = Number(gameId);
+    
+    if (!gameId || isNaN(parsedGameId) || parsedGameId <= 0) {
+      toast({
+        title: "Error",
+        description: "Por favor, ingresa un ID de juego válido",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+    
+    setIsJoining(true);
+    
+    try {
+      joinGame(parsedGameId);
+    } catch (error) {
+      console.error("Error al unirse al juego:", error);
+      toast({
+        title: "Error",
+        description: "Ocurrió un error al unirse al juego",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setIsJoining(false);
+    }
+  };
 
   return (
     <Flex 
@@ -64,9 +99,9 @@ export const Lobby = () => {
             background={`url(images/bg/btn-bg-1.png)`}
             backgroundSize={"fit"}
             backgroundPosition={"center"}
-            onClick={() => {
-              joinGame(Number(gameId));
-            }}
+            onClick={handleJoinGame}
+            isLoading={isJoining}
+            loadingText="Uniendo..."
           >
             Join
           </Button>

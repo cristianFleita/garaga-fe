@@ -133,15 +133,32 @@ export const GameProvider = ({ children }: PropsWithChildren) => {
   };
 
   const executeJoinGame = async (gameId: number) => {
+    if (!gameId || gameId <= 0) {
+      console.error("ID de juego inválido");
+      return;
+    }
+
+    // Verificar primero si el juego existe
+    if (!gameExists(Game, gameId)) {
+      console.error(`El juego con ID ${gameId} no existe`);
+      return;
+    }
+
     try {
-      joinGame(gameId).then(() => {
-        setGameId(gameId);
-        localStorage.setItem(GAME_ID, gameId.toString());
-        navigate("/game");
-        console.log("Join into game: " + gameId);
+      console.log(`Intentando unirse al juego ${gameId}...`);
+      
+      const result = await joinGame(gameId).catch((error) => {
+        console.error("Error en la llamada a joinGame:", error);
+        throw error;
       });
-    } catch {
-      console.error("Error joining game");
+      
+      // Solo configurar el ID y navegar si la unión fue exitosa
+      setGameId(gameId);
+      localStorage.setItem(GAME_ID, gameId.toString());
+      navigate("/game");
+      console.log("Unido exitosamente al juego:", gameId);
+    } catch (error) {
+      console.error("Error al unirse al juego:", error);
     }
   };
 

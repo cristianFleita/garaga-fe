@@ -13,7 +13,8 @@ import { useGameContext } from "../providers/GameProvider";
 import { useRound } from "../dojo/queries/useRound";
 import { useGame } from "../dojo/queries/useGame";
 import { GridCell } from "../types/GameGrid";
-import { RoundStateEnum } from "../dojo/typescript/custom";
+import { RoundStateEnum, GameStateEnum } from "../dojo/typescript/custom";
+import { num } from "starknet";
 
 enum CharacterIdEnum {
   SHEPHERD = 1,
@@ -41,6 +42,7 @@ export const Game = () => {
     player,
     oponent,
     winner,
+    gameId,
   } = useGameContext();
 
   const [selectedCell, setSelectedCell] = useState<GridCell | null>(null);
@@ -53,6 +55,12 @@ export const Game = () => {
       ? "red"
       : "blue";
 
+  // Determine if current player is the creator (player_1)
+  const isCreator = game?.player_1 ? num.toHexString(game?.player_1.toString() ?? 0) === account.address : false;
+  
+  // Show game ID only when waiting for player 2 (game is in Waiting state)
+  const showGameId = game?.state === GameStateEnum.Waiting;
+
   useEffect(() => {
     if (account !== masterAccount && username) {
       checkOrCreateGame();
@@ -62,7 +70,13 @@ export const Game = () => {
   return (
     <GameBackground>
       <>
-        {showWaitForPlayer && <WaitForPlayerPopup />}
+        {showWaitForPlayer && 
+          <WaitForPlayerPopup 
+            gameId={gameId} 
+            isCreator={isCreator} 
+            showGameId={showGameId}
+          />
+        }
         {gameOver && (
           <GameoverPopup player={player} oponent={oponent} winner={winner} />
         )}
