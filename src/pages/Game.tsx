@@ -84,6 +84,11 @@ export const Game = () => {
           username={player.controllerName ?? ""}
           gameId={Number(round?.game_id)}
           round={Number(game?.round_count)}
+          player1Score={game?.player_1_score ?? 0}
+          player2Score={game?.player_2_score ?? 0}
+          player1Name={game?.player_1 ? `Player 1${isCreator ? " (You)" : ""}` : "Player 1"}
+          player2Name={game?.player_2 ? `Player 2${!isCreator ? " (You)" : ""}` : "Player 2"}
+          isCurrentPlayer1={isCreator}
         />
         <Flex
           flexDirection={"column"}
