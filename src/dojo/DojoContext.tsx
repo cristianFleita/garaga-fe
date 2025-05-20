@@ -225,7 +225,13 @@ const DojoContextProvider = ({
     if (!isConnected && !isConnecting && !controllerAccount) {
       return (
         <PreThemeLoadingPage>
-          <img width="60%" src="logos/logo.png" alt="logo" />
+          <img
+            className="loading-logo-home"
+            width="60%"
+            src="images/bg/home-bg.png"
+            alt="logo"
+          />
+
           {!isConnected && (
             <button
               style={{ color: "white" }}
