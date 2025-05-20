@@ -31,7 +31,7 @@ export const GameoverPopup: React.FC<GameoverPopupProps> = ({
               src={
                 winner
                   ? "images/icons/pastor.png"
-                  : "images/icons/sheep_dead.png"
+                  : "images/icons/sheep_dead_no_bg.png"
               }
               alt={winner ? "Winner" : "Loser"}
               width={128}

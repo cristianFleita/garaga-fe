@@ -56,8 +56,10 @@ export const Game = () => {
       : "blue";
 
   // Determine if current player is the creator (player_1)
-  const isCreator = game?.player_1 ? num.toHexString(game?.player_1.toString() ?? 0) === account.address : false;
-  
+  const isCreator = game?.player_1
+    ? num.toHexString(game?.player_1.toString() ?? 0) === account.address
+    : false;
+
   // Show game ID only when waiting for player 2 (game is in Waiting state)
   const showGameId = game?.state === GameStateEnum.Waiting;
 
@@ -70,13 +72,13 @@ export const Game = () => {
   return (
     <GameBackground>
       <>
-        {showWaitForPlayer && 
-          <WaitForPlayerPopup 
-            gameId={gameId} 
-            isCreator={isCreator} 
+        {showWaitForPlayer && (
+          <WaitForPlayerPopup
+            gameId={gameId}
+            isCreator={isCreator}
             showGameId={showGameId}
           />
-        }
+        )}
         {gameOver && (
           <GameoverPopup player={player} oponent={oponent} winner={winner} />
         )}
@@ -86,8 +88,14 @@ export const Game = () => {
           round={Number(game?.round_count)}
           player1Score={game?.player_1_score ?? 0}
           player2Score={game?.player_2_score ?? 0}
-          player1Name={game?.player_1 ? `Player 1${isCreator ? " (You)" : ""}` : "Player 1"}
-          player2Name={game?.player_2 ? `Player 2${!isCreator ? " (You)" : ""}` : "Player 2"}
+          player1Name={
+            game?.player_1 ? `Player 1${isCreator ? " (You)" : ""}` : "Player 1"
+          }
+          player2Name={
+            game?.player_2
+              ? `Player 2${!isCreator ? " (You)" : ""}`
+              : "Player 2"
+          }
           isCurrentPlayer1={isCreator}
         />
         <Flex
