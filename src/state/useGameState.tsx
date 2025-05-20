@@ -124,19 +124,33 @@ export const useGameState = () => {
   useEffect(() => {
     const lsWolfValue = Number(localStorage.getItem(WOLF_INDEX)) ?? 0;
 
-    setGridCells(
-      cells.map((cell) => ({
-        type:
-          isWolf && cell.value == lsWolfValue
-            ? CellType.SHEEP_FAKE
-            : cell.is_alive
-              ? CellType.SHEEP
-              : CellType.SHEEP_DEAD,
-        value: cell.value,
-        idx: cell.idx,
-      }))
-    );
-  }, [cells.length, cells, round?.current_turn, round?.state]);
+    // Registra en consola cuando se actualiza la grilla para debugging
+    console.log("Actualizando grilla con", cells.length, "celdas", 
+      "turno:", round?.current_turn, 
+      "estado:", round?.state);
+
+    if (cells.length > 0) {
+      setGridCells(
+        cells.map((cell) => ({
+          type:
+            isWolf && cell.value == lsWolfValue
+              ? CellType.SHEEP_FAKE
+              : cell.is_alive
+                ? CellType.SHEEP
+                : CellType.SHEEP_DEAD,
+          value: cell.value,
+          idx: cell.idx,
+        }))
+      );
+    }
+  }, [
+    cells, 
+    isWolf, 
+    round?.current_turn, 
+    round?.state,
+    round?.surviving_sheep, 
+    game?.state
+  ]);
 
   useEffect(() => {
     const player1 = num.toHexString(game?.player_1.toString() ?? 0);

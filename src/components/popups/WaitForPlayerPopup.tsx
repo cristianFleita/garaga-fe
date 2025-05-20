@@ -15,7 +15,7 @@ export const WaitForPlayerPopup = ({
   let bannerText = "Waiting for other player!";
   
   if (isCreator && gameId && showGameId) {
-    bannerText = `Waiting for other player! Game ID: ${gameId}`;
+    bannerText = `Game ID: ${gameId} - Waiting for other player!`;
   }
     
   return (
