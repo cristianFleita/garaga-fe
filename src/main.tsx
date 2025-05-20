@@ -5,7 +5,6 @@ import { Toaster } from "sonner";
 import { dojoConfig } from "../dojoConfig.ts";
 import App from "./App.tsx";
 
-import i18n from "i18next";
 import { DojoProvider } from "./dojo/DojoContext.tsx";
 import { setup } from "./dojo/setup.ts";
 import "./index.css";

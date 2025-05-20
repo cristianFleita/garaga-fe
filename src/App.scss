@@ -37,8 +37,8 @@ body {
 
 .login-button {
   border-radius: 20px;
-  background-color: #066b9b;
-  box-shadow: 0px 0px 20px 10px #066b9b;
+  background-color: #d7b662;
+  box-shadow: 0px 0px 4px 2px #252305;
   font-size: 20px;
   width: 300px;
   color: "white !important";
@@ -50,6 +50,22 @@ body {
     width: 100px;
     margin-top: 20px;
     border-radius: 15px;
-    box-shadow: 0px 0px 10px 5px #066b9b;
+    box-shadow: 0px 0px 6px 4px #252305;
+  }
+}
+
+.loading-logo-home {
+  width: 90%;
+}
+
+@media (min-width: 480px) {
+  .loading-logo-home {
+    width: 80%;
+  }
+}
+
+@media (min-width: 768px) {
+  .loading-logo-home {
+    width: 60%;
   }
 }

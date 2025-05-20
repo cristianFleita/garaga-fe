@@ -20,17 +20,13 @@ export const Home = () => {
   }, [account, playButtonClicked]);
 
   return (
-    <Flex 
-      flexDir={"column"} 
-      alignItems={"center"} 
-      minH={"100vh"}
-    >
-      <Image 
-        src="images/bg/home-bg.png" 
-        width={["90%", "80%", "70%"]}
+    <Flex flexDir={"column"} alignItems={"center"} minH={"100vh"}>
+      <Image
+        src="images/bg/home-bg.png"
+        width={["90%", "80%", "70%", "80%", "100%"]}
         minW={"400px"}
         maxW={"1200px"}
-        mt={"20vh"}
+        mt={["20vh", "10vh", "5vh"]}
         objectFit={"contain"}
       />
 
@@ -49,7 +45,7 @@ export const Home = () => {
         }}
         width={"20%"}
         minW={["150px", "300px"]}
-        mt={8}
+        mt={[8, 4]}
       >
         Start
       </Button>
