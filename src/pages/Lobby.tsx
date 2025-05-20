@@ -22,7 +22,7 @@ export const Lobby = () => {
   const handleJoinGame = () => {
     // Validar que el ID del juego sea un número válido
     const parsedGameId = Number(gameId);
-    
+
     if (!gameId || isNaN(parsedGameId) || parsedGameId <= 0) {
       toast({
         title: "Error",
@@ -33,9 +33,9 @@ export const Lobby = () => {
       });
       return;
     }
-    
+
     setIsJoining(true);
-    
+
     try {
       joinGame(parsedGameId);
     } catch (error) {
@@ -53,25 +53,17 @@ export const Lobby = () => {
   };
 
   return (
-    <Flex 
-      flexDir={"column"} 
-      alignItems={"center"} 
-      minH={"100vh"}
-    >
-      <Image 
-        src="images/bg/home-bg.png" 
-        width={["90%", "80%", "70%"]}
+    <Flex flexDir={"column"} alignItems={"center"} minH={"100vh"}>
+      <Image
+        src="images/bg/home-bg.png"
+        width={["90%", "40%", "50%"]}
         minW={"400px"}
         maxW={"1200px"}
         mt={"20vh"}
         objectFit={"contain"}
       />
-      
-      <Flex 
-        flexDir={"column"} 
-        gap={4} 
-        mt={8}
-      >
+
+      <Flex flexDir={"column"} gap={4} mt={8}>
         <Button
           variant={"secondarySolid"}
           background={`url(images/bg/btn-bg-1.png)`}
